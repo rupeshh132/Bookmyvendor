@@ -105,8 +105,8 @@ Full design system, wireframes & component rules ? [`BookMyVendor_Wireframe_Desi
 - [x] Engineering handbook
 - [x] Go-to-market strategy
 - [x] Design system & wireframes
-- [ ] Repository setup & project scaffold
-- [ ] Database schema finalization
+- [x] Repository setup & project scaffold
+- [x] Database schema finalization
 
 ### ?? Sprint 0 — Project Setup
 - [ ] React + Vite + TypeScript frontend scaffold
@@ -265,3 +265,4 @@ sprint:   Sprint completion commit
 *Built with passion for India's event industry* ??
 
 </div>
+
