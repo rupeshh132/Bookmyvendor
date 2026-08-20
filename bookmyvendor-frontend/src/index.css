@@ -1,0 +1,238 @@
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@500,600&f[]=general-sans@400,500,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Reset & Defaults ──────────────────────────────────────── */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-ivory font-sans text-ink antialiased;
+    /* NEVER pure white background */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-ink;
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-stone;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-navy;
+  }
+}
+
+/* ─── Component Layer ────────────────────────────────────────────── */
+@layer components {
+
+  /* Container */
+  .bmv-container {
+    @apply max-w-container mx-auto px-6 md:px-12 lg:px-20;
+  }
+
+  /* Section padding */
+  .bmv-section {
+    @apply py-10 md:py-14 lg:py-20;
+  }
+
+  /* ── Buttons ─────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center
+           bg-navy text-white
+           rounded-full px-7 py-3.5
+           font-sans font-semibold text-sm tracking-widest uppercase
+           transition-all duration-200 ease-smooth
+           hover:bg-opacity-90 hover:shadow-cardHover
+           active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center
+           bg-white text-navy border border-stone
+           rounded-full px-7 py-3.5
+           font-sans font-semibold text-sm tracking-widest uppercase
+           transition-all duration-200 ease-smooth
+           hover:border-navy hover:shadow-card
+           active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center
+           bg-terracotta text-navy
+           rounded-full px-7 py-3.5
+           font-sans font-semibold text-sm tracking-widest uppercase
+           transition-all duration-200 ease-smooth
+           hover:opacity-90 hover:shadow-card
+           active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center
+           text-navy
+           rounded-full px-7 py-3.5
+           font-sans font-semibold text-sm tracking-widest uppercase
+           transition-all duration-200 ease-smooth
+           hover:bg-stone
+           active:scale-95;
+  }
+
+  /* ── Cards ───────────────────────────────────────── */
+  .card {
+    @apply bg-stone rounded-card p-8 shadow-card
+           transition-all duration-200 ease-smooth;
+  }
+
+  .card-white {
+    @apply bg-white rounded-card p-8 shadow-card
+           transition-all duration-200 ease-smooth;
+  }
+
+  .card-hover {
+    @apply hover:shadow-cardHover hover:scale-[1.02]
+           transition-all duration-200 ease-smooth;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-cardLg p-8 shadow-elevated;
+  }
+
+  /* ── Input Fields ────────────────────────────────── */
+  .bmv-input {
+    @apply w-full bg-white text-ink placeholder-muted
+           border border-stone rounded-input
+           px-4 py-3.5 font-sans text-base
+           transition-all duration-200
+           focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/10;
+  }
+
+  .bmv-select {
+    @apply bmv-input appearance-none cursor-pointer;
+  }
+
+  .bmv-label {
+    @apply block font-sans font-medium text-ink text-sm mb-1.5;
+  }
+
+  /* ── Badges / Tags ───────────────────────────────── */
+  .badge-verified {
+    @apply inline-flex items-center gap-1
+           bg-sage text-white
+           rounded-full px-2.5 py-1
+           font-sans font-medium text-label tracking-widest uppercase;
+  }
+
+  .badge-category {
+    @apply inline-flex items-center
+           bg-stone text-ink
+           rounded-full px-3 py-1.5
+           font-sans font-medium text-xs;
+  }
+
+  .badge-pending {
+    @apply inline-flex items-center
+           bg-amber text-white
+           rounded-full px-2.5 py-1
+           font-sans font-medium text-label tracking-widest uppercase;
+  }
+
+  .badge-new {
+    @apply inline-flex items-center
+           bg-navy text-white
+           rounded-full px-2.5 py-1
+           font-sans font-medium text-label tracking-widest uppercase;
+  }
+
+  /* ── Section Label ───────────────────────────────── */
+  .section-label {
+    @apply font-sans font-medium text-label tracking-widest uppercase text-muted mb-3;
+  }
+
+  /* ── Section Heading ─────────────────────────────── */
+  .section-heading {
+    @apply font-display font-semibold text-4xl md:text-h2 text-ink leading-tight;
+  }
+
+  /* ── Image Card with overlay ─────────────────────── */
+  .image-card {
+    @apply relative overflow-hidden rounded-card;
+  }
+
+  .image-card-overlay {
+    @apply absolute inset-0;
+    background: linear-gradient(to top, rgba(22, 35, 46, 0.7) 0%, transparent 60%);
+  }
+
+  /* ── Nav pill ────────────────────────────────────── */
+  .nav-pill {
+    @apply fixed top-4 left-1/2 -translate-x-1/2 z-50
+           flex items-center gap-6
+           bg-white/92 backdrop-blur-sm
+           rounded-full shadow-floating
+           px-5 py-2;
+  }
+
+  /* ── Dashboard sidebar ───────────────────────────── */
+  .sidebar-link {
+    @apply flex items-center gap-3
+           px-4 py-2.5 rounded-xl
+           font-sans font-medium text-sm text-muted
+           transition-all duration-200
+           hover:bg-stone hover:text-ink;
+  }
+
+  .sidebar-link-active {
+    @apply sidebar-link bg-stone text-navy;
+  }
+
+  /* ── Divider ─────────────────────────────────────── */
+  .bmv-divider {
+    @apply border-t border-stone my-6;
+  }
+}
+
+/* ─── Utility Layer ──────────────────────────────────────────────── */
+@layer utilities {
+  /* Text tracking for labels */
+  .tracking-label {
+    letter-spacing: 0.05em;
+  }
+
+  /* Hide scrollbar but keep scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Gradient overlay for image cards (not glassmorphism) */
+  .img-overlay {
+    background: linear-gradient(to top, rgba(22, 35, 46, 0.7) 0%, transparent 60%);
+  }
+
+  /* Editorial muted filter for images */
+  .img-editorial {
+    filter: saturate(0.85) contrast(1.02);
+  }
+}
