@@ -7,6 +7,8 @@ import LoginPage from './features/auth/LoginPage'
 import RegisterPage from './features/auth/RegisterPage'
 import ForgotPasswordPage from './features/auth/ForgotPasswordPage'
 import ResetPasswordPage from './features/auth/ResetPasswordPage'
+import VendorSearchPage from './features/vendor-search/VendorSearchPage'
+import VendorDashboardPage from './features/vendor-dashboard/VendorDashboardPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,3 +58,4 @@ function App() {
 }
 
 export default App
+

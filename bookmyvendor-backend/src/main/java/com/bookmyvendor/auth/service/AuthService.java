@@ -3,6 +3,8 @@ package com.bookmyvendor.auth.service;
 import com.bookmyvendor.auth.dto.*;
 import com.bookmyvendor.auth.entity.*;
 import com.bookmyvendor.auth.repository.*;
+import com.bookmyvendor.auth.repository.CustomerProfileRepository;
+import com.bookmyvendor.auth.repository.VendorProfileRepository;
 import com.bookmyvendor.auth.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,8 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final CustomerProfileRepository customerProfileRepository;
+    private final VendorProfileRepository vendorProfileRepository;
     private final PasswordResetTokenRepository resetTokenRepository;
     private final OAuthAccountRepository oAuthAccountRepository;
     private final JwtService jwtService;
@@ -65,7 +69,24 @@ public class AuthService {
                 .authProvider(User.AuthProvider.LOCAL)
                 .isActive(true)
                 .build();
-        userRepository.save(user);
+                userRepository.save(user);
+
+        // Create Profile based on Role
+        if (req.getRole() == User.Role.CUSTOMER) {
+            CustomerProfile customerProfile = CustomerProfile.builder()
+                    .user(user)
+                    .fullName(req.getFullName())
+                    .build();
+            customerProfileRepository.save(customerProfile);
+        } else if (req.getRole() == User.Role.VENDOR) {
+            VendorProfile vendorProfile = VendorProfile.builder()
+                    .user(user)
+                    .businessName(req.getFullName())
+                    .category(req.getCategory())
+                    .city(req.getCity())
+                    .build();
+            vendorProfileRepository.save(vendorProfile);
+        }
 
         // Send welcome email async
         if (StringUtils.hasText(req.getEmail())) {
@@ -128,7 +149,24 @@ public class AuthService {
         });
 
         user.setPhoneVerified(true);
-        userRepository.save(user);
+                userRepository.save(user);
+
+        // Create Profile based on Role
+        if (req.getRole() == User.Role.CUSTOMER) {
+            CustomerProfile customerProfile = CustomerProfile.builder()
+                    .user(user)
+                    .fullName(req.getFullName())
+                    .build();
+            customerProfileRepository.save(customerProfile);
+        } else if (req.getRole() == User.Role.VENDOR) {
+            VendorProfile vendorProfile = VendorProfile.builder()
+                    .user(user)
+                    .businessName(req.getFullName())
+                    .category(req.getCategory())
+                    .city(req.getCity())
+                    .build();
+            vendorProfileRepository.save(vendorProfile);
+        }
 
         boolean profileIncomplete = user.getEmail() == null && user.getPhone() != null
                 && !StringUtils.hasText(user.getPasswordHash());
@@ -157,7 +195,24 @@ public class AuthService {
             if (user != null && user.getAuthProvider() == User.AuthProvider.LOCAL) {
                 // Link Google to existing local account
                 user.setEmailVerified(true);
-                userRepository.save(user);
+                        userRepository.save(user);
+
+        // Create Profile based on Role
+        if (req.getRole() == User.Role.CUSTOMER) {
+            CustomerProfile customerProfile = CustomerProfile.builder()
+                    .user(user)
+                    .fullName(req.getFullName())
+                    .build();
+            customerProfileRepository.save(customerProfile);
+        } else if (req.getRole() == User.Role.VENDOR) {
+            VendorProfile vendorProfile = VendorProfile.builder()
+                    .user(user)
+                    .businessName(req.getFullName())
+                    .category(req.getCategory())
+                    .city(req.getCity())
+                    .build();
+            vendorProfileRepository.save(vendorProfile);
+        }
             } else if (user == null) {
                 // Brand new user via Google
                 user = User.builder()
@@ -167,7 +222,24 @@ public class AuthService {
                         .isEmailVerified(true)
                         .isActive(true)
                         .build();
-                userRepository.save(user);
+                        userRepository.save(user);
+
+        // Create Profile based on Role
+        if (req.getRole() == User.Role.CUSTOMER) {
+            CustomerProfile customerProfile = CustomerProfile.builder()
+                    .user(user)
+                    .fullName(req.getFullName())
+                    .build();
+            customerProfileRepository.save(customerProfile);
+        } else if (req.getRole() == User.Role.VENDOR) {
+            VendorProfile vendorProfile = VendorProfile.builder()
+                    .user(user)
+                    .businessName(req.getFullName())
+                    .category(req.getCategory())
+                    .city(req.getCity())
+                    .build();
+            vendorProfileRepository.save(vendorProfile);
+        }
             }
             // Save OAuth account link
             OAuthAccount newOAuth = OAuthAccount.builder()
@@ -238,7 +310,24 @@ public class AuthService {
 
         User user = resetToken.getUser();
         user.setPasswordHash(passwordEncoder.encode(req.getNewPassword()));
-        userRepository.save(user);
+                userRepository.save(user);
+
+        // Create Profile based on Role
+        if (req.getRole() == User.Role.CUSTOMER) {
+            CustomerProfile customerProfile = CustomerProfile.builder()
+                    .user(user)
+                    .fullName(req.getFullName())
+                    .build();
+            customerProfileRepository.save(customerProfile);
+        } else if (req.getRole() == User.Role.VENDOR) {
+            VendorProfile vendorProfile = VendorProfile.builder()
+                    .user(user)
+                    .businessName(req.getFullName())
+                    .category(req.getCategory())
+                    .city(req.getCity())
+                    .build();
+            vendorProfileRepository.save(vendorProfile);
+        }
 
         resetToken.setUsed(true);
         resetTokenRepository.save(resetToken);
@@ -282,3 +371,4 @@ public class AuthService {
         }
     }
 }
+

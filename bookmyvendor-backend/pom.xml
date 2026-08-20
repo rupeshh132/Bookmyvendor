@@ -142,7 +142,12 @@
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+          <!-- Hibernate Spatial for PostGIS -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-spatial</artifactId>
+        </dependency>
+    </dependencies>
 
   <build>
     <plugins>
@@ -178,3 +183,4 @@
     </plugins>
   </build>
 </project>
+
