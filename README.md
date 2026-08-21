@@ -7,8 +7,8 @@
 **A two-sided event vendor marketplace for India**
 Find, compare & book verified photographers, caterers, decorators and more — all in one place.
 
-[![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)](https://github.com/rupeshh132/Bookmyvendor)
-[![Phase](https://img.shields.io/badge/Phase-0%20%7C%20Planning%20%26%20Design-blue?style=flat-square)](https://github.com/rupeshh132/Bookmyvendor)
+[![Status](https://img.shields.io/badge/Status-MVP%20Complete-brightgreen?style=flat-square)](https://github.com/rupeshh132/Bookmyvendor)
+[![Phase](https://img.shields.io/badge/Phase-Launch%20Ready-green?style=flat-square)](https://github.com/rupeshh132/Bookmyvendor)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 </div>
@@ -265,6 +265,7 @@ sprint:   Sprint completion commit
 *Built with passion for India's event industry* ??
 
 </div>
+
 
 
 

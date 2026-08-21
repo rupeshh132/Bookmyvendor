@@ -35,4 +35,7 @@ public interface VendorProfileRepository extends JpaRepository<VendorProfile, UU
             @Param("lon") double lon,
             @Param("radiusMeters") double radiusMeters
     );
+    List<VendorProfile> findByKycStatus(VendorProfile.KycStatus kycStatus);
+    long countByKycStatus(VendorProfile.KycStatus kycStatus);
 }
+

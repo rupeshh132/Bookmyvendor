@@ -10,6 +10,8 @@ import ResetPasswordPage from './features/auth/ResetPasswordPage'
 import VendorSearchPage from './features/vendor-search/VendorSearchPage'
 import VendorDetailPage from './features/vendor-search/VendorDetailPage'
 
+import AdminDashboardPage from './features/admin/AdminDashboardPage'
+
 import CustomerBookingsPage from './features/vendor-search/CustomerBookingsPage'
 
 import VendorBookingsPage from './features/vendor-dashboard/VendorBookingsPage'
@@ -64,6 +66,7 @@ function App() {
 }
 
 export default App
+
 
 
 
