@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Store, MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
 import { vendorService, VendorProfile } from '../../services/vendorService'
+import PortfolioManager from './components/PortfolioManager'
+
 
 export default function VendorDashboardPage() {
   const queryClient = useQueryClient()
@@ -177,8 +179,13 @@ export default function VendorDashboardPage() {
             )}
           </div>
         </div>
+        {/* Portfolio Section */}
+        <div className="card-white mt-6">
+          <PortfolioManager />
+        </div>
 
       </div>
     </div>
   )
 }
+
