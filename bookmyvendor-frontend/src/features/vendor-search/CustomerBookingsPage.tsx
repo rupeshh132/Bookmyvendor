@@ -2,6 +2,22 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Calendar, MessageCircle, Check } from 'lucide-react'
 import { bookingService } from '../../services/bookingService'
+import { paymentService } from '../../services/paymentService'
+
+// Helper to load Razorpay script
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.onload = () => {
+      resolve(true)
+    }
+    script.onerror = () => {
+      resolve(false)
+    }
+    document.body.appendChild(script)
+  })
+}
 import ChatRoom from '../../components/chat/ChatRoom'
 
 export default function CustomerBookingsPage() {
@@ -13,10 +29,66 @@ export default function CustomerBookingsPage() {
     queryFn: bookingService.getCustomerRequests,
   })
 
-  const acceptMutation = useMutation({
-    mutationFn: (bookingId: string) => bookingService.acceptQuote(bookingId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['customerBookings'] })
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+
+  const handlePaymentAndAccept = async (bookingId: string) => {
+    setIsProcessingPayment(true)
+    try {
+      const res = await loadRazorpay()
+      if (!res) {
+        alert('Razorpay SDK failed to load. Are you online?')
+        setIsProcessingPayment(false)
+        return
+      }
+
+      // Create Order on Backend
+      const orderData = await paymentService.createOrder(bookingId)
+
+      const options = {
+        key: orderData.keyId,
+        amount: Math.round(orderData.amount * 100),
+        currency: orderData.currency,
+        name: 'BookMyVendor',
+        description: 'Advance Booking Payment',
+        order_id: orderData.orderId,
+        handler: async function (response: any) {
+          try {
+            await paymentService.verifyPayment({
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature
+            })
+            alert('Payment Successful! Booking Confirmed.')
+            queryClient.invalidateQueries({ queryKey: ['customerBookings'] })
+          } catch (err) {
+            alert('Payment verification failed.')
+          }
+        },
+        prefill: {
+          name: 'Customer',
+          email: 'customer@example.com',
+          contact: '9999999999'
+        },
+        theme: {
+          color: '#16232E'
+        }
+      }
+
+      // Type assertion for Razorpay
+      const rzp = new (window as any).Razorpay(options)
+      
+      rzp.on('payment.failed', function (response: any) {
+        alert(response.error.description)
+      })
+
+      rzp.open()
+
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to initiate payment')
+    } finally {
+      setIsProcessingPayment(false)
+    }
+  }
     }
   })
 
@@ -95,11 +167,11 @@ export default function CustomerBookingsPage() {
                             Vendor Quoted ₹{requests.find(r => r.id === activeBookingId)?.quotedAmount}
                          </div>
                          <button 
-                           onClick={() => acceptMutation.mutate(activeBookingId)}
-                           disabled={acceptMutation.isPending}
+                           onClick={() => handlePaymentAndAccept(activeBookingId)}
+                           disabled={isProcessingPayment}
                            className="btn-primary py-2 text-sm w-full"
                          >
-                           Accept & Book
+                           {isProcessingPayment ? 'Processing...' : 'Pay 20% Advance & Book'}
                          </button>
                        </div>
                     )}
@@ -132,3 +204,5 @@ export default function CustomerBookingsPage() {
     </div>
   )
 }
+
+

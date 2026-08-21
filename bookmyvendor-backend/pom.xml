@@ -158,6 +158,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
+            <!-- Razorpay SDK for Payments -->
+        <dependency>
+            <groupId>com.razorpay</groupId>
+            <artifactId>razorpay-java</artifactId>
+            <version>1.4.6</version>
+        </dependency>
     </dependencies>
 
   <build>
@@ -194,6 +200,7 @@
     </plugins>
   </build>
 </project>
+
 
 
 
