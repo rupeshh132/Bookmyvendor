@@ -8,6 +8,10 @@ import RegisterPage from './features/auth/RegisterPage'
 import ForgotPasswordPage from './features/auth/ForgotPasswordPage'
 import ResetPasswordPage from './features/auth/ResetPasswordPage'
 import VendorSearchPage from './features/vendor-search/VendorSearchPage'
+import VendorDetailPage from './features/vendor-search/VendorDetailPage'
+
+import VendorBookingsPage from './features/vendor-dashboard/VendorBookingsPage'
+
 import VendorDashboardPage from './features/vendor-dashboard/VendorDashboardPage'
 
 const queryClient = new QueryClient({
@@ -58,4 +62,6 @@ function App() {
 }
 
 export default App
+
+
 

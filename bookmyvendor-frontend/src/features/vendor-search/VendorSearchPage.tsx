@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search, MapPin, Star, Filter, ArrowRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { vendorService, VendorProfile } from '../../services/vendorService'
@@ -6,6 +7,7 @@ import { vendorService, VendorProfile } from '../../services/vendorService'
 const CATEGORIES = ['PHOTOGRAPHER', 'CATERER', 'DECORATOR', 'VENUE', 'MAKEUP']
 
 export default function VendorSearchPage() {
+  const navigate = useNavigate()
   const [category, setCategory] = useState('PHOTOGRAPHER')
   const [city, setCity] = useState('Lucknow')
 
@@ -106,7 +108,7 @@ export default function VendorSearchPage() {
         {/* Results Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {vendors?.map(vendor => (
-            <div key={vendor.id} className="card-white group cursor-pointer p-0 overflow-hidden flex flex-col">
+            <div key={vendor.id} onClick={() => navigate(`/vendors/${vendor.id}`)} className="card-white group cursor-pointer p-0 overflow-hidden flex flex-col">
               {/* Image Placeholder */}
               <div className="h-48 bg-stone relative">
                 {/* Fallback pattern */}
@@ -157,3 +159,4 @@ export default function VendorSearchPage() {
     </div>
   )
 }
+
