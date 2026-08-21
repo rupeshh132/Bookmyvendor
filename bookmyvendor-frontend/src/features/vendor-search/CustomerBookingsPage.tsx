@@ -1,23 +1,22 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Calendar, Users, MessageSquare, Check, X, Clock, MessageCircle } from 'lucide-react'
+import { Calendar, MessageCircle, Check } from 'lucide-react'
 import { bookingService } from '../../services/bookingService'
 import ChatRoom from '../../components/chat/ChatRoom'
 
-export default function VendorBookingsPage() {
+export default function CustomerBookingsPage() {
   const queryClient = useQueryClient()
   const [activeBookingId, setActiveBookingId] = useState<string | null>(null)
-  const [quoteAmount, setQuoteAmount] = useState<string>('')
 
   const { data: requests = [], isLoading } = useQuery({
-    queryKey: ['vendorBookings'],
-    queryFn: bookingService.getVendorRequests,
+    queryKey: ['customerBookings'],
+    queryFn: bookingService.getCustomerRequests,
   })
 
-  const quoteMutation = useMutation({
-    mutationFn: ({ bookingId, amount }: { bookingId: string, amount: number }) => bookingService.sendQuote(bookingId, amount),
+  const acceptMutation = useMutation({
+    mutationFn: (bookingId: string) => bookingService.acceptQuote(bookingId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['vendorBookings'] })
+      queryClient.invalidateQueries({ queryKey: ['customerBookings'] })
     }
   })
 
@@ -28,20 +27,19 @@ export default function VendorBookingsPage() {
       <div className="max-w-5xl mx-auto space-y-6">
         
         <div>
-          <h1 className="font-display font-semibold text-3xl text-ink">Lead Pipeline</h1>
-          <p className="font-sans text-muted">Manage your incoming quotation requests, send quotes, and chat with customers.</p>
+          <h1 className="font-display font-semibold text-3xl text-ink">My Bookings</h1>
+          <p className="font-sans text-muted">Track your event quotes and chat with vendors.</p>
         </div>
 
         {requests.length === 0 ? (
-          <div className="text-center py-20 bg-stone rounded-card">
-            <Clock size={48} className="text-muted mx-auto mb-4 opacity-50" />
-            <h3 className="font-display font-semibold text-xl text-ink mb-2">No requests yet</h3>
-            <p className="font-sans text-muted">Keep your profile updated to attract more customers.</p>
+          <div className="text-center py-20 bg-stone rounded-card border border-stone">
+            <h3 className="font-display font-semibold text-xl text-ink mb-2">No bookings yet</h3>
+            <p className="font-sans text-muted">Find a vendor and request a quote to get started.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            {/* ── Left Column: Leads List ── */}
+            {/* ── Left Column: Requests List ── */}
             <div className="lg:col-span-2 space-y-4">
               {requests.map(req => (
                 <div 
@@ -61,8 +59,8 @@ export default function VendorBookingsPage() {
                       }`}>
                         {req.status}
                       </span>
-                      <h3 className="font-display font-semibold text-xl text-ink mt-2">{req.customerName}</h3>
-                      <p className="font-sans text-sm text-muted">Requested on {new Date(req.createdAt).toLocaleDateString()}</p>
+                      <h3 className="font-display font-semibold text-xl text-ink mt-2">{req.vendorBusinessName}</h3>
+                      <p className="font-sans text-sm text-muted capitalize">{req.eventType.toLowerCase()} Event</p>
                     </div>
                     {req.quotedAmount && (
                        <div className="text-right">
@@ -73,9 +71,7 @@ export default function VendorBookingsPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-4 font-sans text-sm text-ink mt-4">
-                    <span className="flex items-center gap-1.5"><Calendar size={16} className="text-terracotta"/> {new Date(req.eventDate).toLocaleDateString()}</span>
-                    <span className="flex items-center gap-1.5 capitalize text-navy font-semibold">{req.eventType.toLowerCase()} Event</span>
-                    {req.guestCount && <span className="flex items-center gap-1.5"><Users size={16} className="text-sage"/> {req.guestCount} Guests</span>}
+                    <span className="flex items-center gap-1.5 bg-stone px-2 py-1 rounded"><Calendar size={14} className="text-terracotta"/> {new Date(req.eventDate).toLocaleDateString()}</span>
                   </div>
                 </div>
               ))}
@@ -89,30 +85,22 @@ export default function VendorBookingsPage() {
                   {/* Action Bar */}
                   <div className="p-4 border-b border-stone bg-stone/20">
                     {requests.find(r => r.id === activeBookingId)?.status === 'PENDING' && (
-                      <div className="flex gap-2">
-                        <input 
-                          type="number" 
-                          placeholder="Amount (₹)" 
-                          className="bmv-input flex-1 py-2 text-sm"
-                          value={quoteAmount}
-                          onChange={(e) => setQuoteAmount(e.target.value)}
-                        />
-                        <button 
-                          onClick={() => {
-                             if(quoteAmount) {
-                               quoteMutation.mutate({ bookingId: activeBookingId, amount: Number(quoteAmount) })
-                             }
-                          }}
-                          disabled={quoteMutation.isPending}
-                          className="btn-primary py-2 text-sm whitespace-nowrap"
-                        >
-                          Send Quote
-                        </button>
-                      </div>
+                       <div className="text-center font-sans text-sm text-amber bg-amber/10 py-2 rounded">
+                          Waiting for vendor to quote
+                       </div>
                     )}
                     {requests.find(r => r.id === activeBookingId)?.status === 'QUOTED' && (
-                       <div className="text-center font-sans text-sm text-navy bg-navy/10 py-2 rounded">
-                          Waiting for customer to accept ₹{requests.find(r => r.id === activeBookingId)?.quotedAmount}
+                       <div className="flex flex-col gap-2">
+                         <div className="text-center font-sans text-sm text-navy bg-navy/10 py-2 rounded font-bold">
+                            Vendor Quoted ₹{requests.find(r => r.id === activeBookingId)?.quotedAmount}
+                         </div>
+                         <button 
+                           onClick={() => acceptMutation.mutate(activeBookingId)}
+                           disabled={acceptMutation.isPending}
+                           className="btn-primary py-2 text-sm w-full"
+                         >
+                           Accept & Book
+                         </button>
                        </div>
                     )}
                     {requests.find(r => r.id === activeBookingId)?.status === 'ACCEPTED' && (
@@ -131,8 +119,8 @@ export default function VendorBookingsPage() {
               ) : (
                 <div className="card-white h-[600px] border border-stone border-dashed flex flex-col items-center justify-center text-center p-6 text-muted">
                    <MessageCircle size={48} className="mb-4 opacity-50" />
-                   <h4 className="font-display text-lg text-ink mb-1">Select a Lead</h4>
-                   <p className="font-sans text-sm">Click on a booking request to view details, chat with the customer, and send quotes.</p>
+                   <h4 className="font-display text-lg text-ink mb-1">Select a Booking</h4>
+                   <p className="font-sans text-sm">Click on a booking to view details, chat with the vendor, and accept quotes.</p>
                 </div>
               )}
             </div>

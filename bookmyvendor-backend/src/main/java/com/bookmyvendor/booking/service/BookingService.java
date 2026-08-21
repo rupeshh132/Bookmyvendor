@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,9 +69,48 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public BookingRequestDto sendQuote(UUID vendorUserId, UUID bookingId, BigDecimal amount) {
+        VendorProfile profile = vendorProfileRepository.findByUserId(vendorUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor profile not found"));
+
+        BookingRequest booking = bookingRequestRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getVendor().getId().equals(profile.getId())) {
+            throw new IllegalArgumentException("Not authorized");
+        }
+
+        booking.setQuotedAmount(amount);
+        booking.setStatus(BookingRequest.RequestStatus.QUOTED);
+        BookingRequest saved = bookingRequestRepository.save(booking);
+
+        return BookingRequestDto.fromEntity(saved, getCustomerName(saved.getCustomer().getId(), saved.getCustomer().getEmail()));
+    }
+
+    @Transactional
+    public BookingRequestDto acceptQuote(UUID customerUserId, UUID bookingId) {
+        BookingRequest booking = bookingRequestRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getCustomer().getId().equals(customerUserId)) {
+            throw new IllegalArgumentException("Not authorized");
+        }
+
+        if (booking.getStatus() != BookingRequest.RequestStatus.QUOTED) {
+            throw new IllegalArgumentException("Booking must be quoted before accepting");
+        }
+
+        booking.setStatus(BookingRequest.RequestStatus.ACCEPTED);
+        BookingRequest saved = bookingRequestRepository.save(booking);
+
+        return BookingRequestDto.fromEntity(saved, getCustomerName(customerUserId, booking.getCustomer().getEmail()));
+    }
+
     private String getCustomerName(UUID userId, String fallbackEmail) {
         return customerProfileRepository.findByUserId(userId)
                 .map(CustomerProfile::getFullName)
                 .orElse(fallbackEmail);
     }
 }
+
