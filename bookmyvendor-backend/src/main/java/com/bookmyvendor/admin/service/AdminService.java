@@ -65,4 +65,25 @@ public class AdminService {
         VendorProfile saved = vendorProfileRepository.save(profile);
         return VendorProfileDto.fromEntity(saved);
     }
+
+    public List<com.bookmyvendor.admin.dto.AdminUserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(user -> 
+            com.bookmyvendor.admin.dto.AdminUserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .role(user.getRole())
+                .isActive(user.isActive())
+                .createdAt(user.getCreatedAt())
+                .build()
+        ).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void toggleUserBlock(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+    }
 }

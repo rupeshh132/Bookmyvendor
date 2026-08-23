@@ -44,8 +44,15 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/vendors/search").permitAll()
                 // Explicitly protect /me before the wildcard {id}
                 .requestMatchers("/api/v1/vendors/me/**").hasRole("VENDOR")
-                // Now allow public access to public vendor profiles by ID
+                // Now allow public access to public vendor profiles and portfolios
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/vendors/{id}").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/vendors/{id}/portfolio").permitAll()
+                
+                // Allow public access to read reviews
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/reviews/vendor/**").permitAll()
+                
+                // Allow WebSocket Upgrade Handshake (Auth is done at STOMP layer via ChannelInterceptor)
+                .requestMatchers("/ws/**").permitAll()
                 
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/actuator/health").permitAll()

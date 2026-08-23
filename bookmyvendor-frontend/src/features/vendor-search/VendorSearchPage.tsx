@@ -119,7 +119,7 @@ export default function VendorSearchPage() {
                   </div>
                 )}
                 <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-navy text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">
-                  ₹{vendor.basePrice || 'N/A'} {vendor.priceUnit.replace('_', ' ')}
+                  ₹{vendor.basePrice || 'N/A'} {vendor.priceUnit?.replace('_', ' ') || ''}
                 </div>
               </div>
 

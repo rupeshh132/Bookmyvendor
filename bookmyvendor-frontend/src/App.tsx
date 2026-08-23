@@ -11,6 +11,10 @@ import VendorSearchPage from './features/vendor-search/VendorSearchPage'
 import VendorDetailPage from './features/vendor-search/VendorDetailPage'
 
 import AdminDashboardPage from './features/admin/AdminDashboardPage'
+import AdminLayout from './components/layout/AdminLayout'
+import AdminUsersPage from './features/admin/AdminUsersPage'
+import AdminBookingsPage from './features/admin/AdminBookingsPage'
+import AdminKycQueuePage from './features/admin/AdminKycQueuePage'
 
 import CustomerBookingsPage from './features/vendor-search/CustomerBookingsPage'
 
@@ -57,9 +61,14 @@ function App() {
             {/* Vendor Routes */}
             <Route path="/vendor/dashboard" element={<VendorDashboardPage />} />
             <Route path="/vendor/bookings" element={<VendorBookingsPage />} />
-            
-            {/* Admin Routes */}
+          </Route>
+
+          {/* Admin Routes (With Admin Sidebar) */}
+          <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/kyc" element={<AdminKycQueuePage />} />
+            <Route path="/admin/bookings" element={<AdminBookingsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

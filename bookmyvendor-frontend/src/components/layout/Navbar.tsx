@@ -48,7 +48,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-2">
           {isAuthenticated ? (
             <>
-              <Link to={user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} className="btn-ghost py-2 px-4 text-xs">
+              <Link to={user?.role === 'ADMIN' ? '/admin' : user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} className="btn-ghost py-2 px-4 text-xs">
                 Dashboard
               </Link>
               <button onClick={() => { logout(); setMobileOpen(false); window.location.href='/login' }} className="btn-primary py-2 px-5 text-xs bg-rose hover:bg-rose/90 shadow-none">
@@ -100,7 +100,7 @@ export default function Navbar() {
           <div className="flex flex-col gap-3 mt-8">
             {isAuthenticated ? (
               <>
-                <Link to={user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} onClick={() => setMobileOpen(false)} className="btn-secondary w-full text-center py-4">
+                <Link to={user?.role === 'ADMIN' ? '/admin' : user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} onClick={() => setMobileOpen(false)} className="btn-secondary w-full text-center py-4">
                   Dashboard
                 </Link>
                 <button onClick={() => { logout(); setMobileOpen(false); window.location.href='/login' }} className="btn-primary w-full text-center py-4 bg-rose hover:bg-rose/90 shadow-none">

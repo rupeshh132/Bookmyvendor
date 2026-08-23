@@ -100,57 +100,57 @@ export default function VendorBookingsPage() {
                 <div className="card-white p-0 border border-stone h-[600px] flex flex-col overflow-hidden">
                   
                   {/* Action Bar */}
-                  <div className="p-4 border-b border-stone bg-stone/20">
-                    {requests.find(r => r.id === activeBookingId)?.status === 'PENDING' && (
+                  {requests.find(r => r.id === activeBookingId)?.status === 'PENDING' && (
+                    <div className="p-5 border-b border-stone bg-white flex flex-col sm:flex-row gap-4 items-end sm:items-center justify-between shadow-sm z-10">
+                      <div className="flex-1 w-full relative">
+                        <label className="block text-xs font-bold text-muted uppercase tracking-wider mb-1.5">Quote Amount</label>
+                        <div className="relative flex items-center">
+                          <span className="absolute left-4 font-display font-semibold text-ink text-lg">₹</span>
+                          <input 
+                            type="number" 
+                            placeholder="0.00" 
+                            className="w-full bg-stone/20 border border-stone rounded-xl py-3 pl-10 pr-4 font-display font-semibold text-lg text-ink focus:outline-none focus:border-terracotta focus:ring-1 focus:ring-terracotta transition-all"
+                            value={quoteAmount}
+                            onChange={(e) => setQuoteAmount(e.target.value)}
+                          />
+                        </div>
+                      </div>
                       <div className="flex gap-2">
-                        <input 
-                          type="number" 
-                          placeholder="Amount (₹)" 
-                          className="bmv-input flex-1 py-2 text-sm"
-                          value={quoteAmount}
-                          onChange={(e) => setQuoteAmount(e.target.value)}
-                        />
-                        <button 
-                          onClick={() => {
-                             if(quoteAmount) {
-                               quoteMutation.mutate({ bookingId: activeBookingId, amount: Number(quoteAmount) })
-                             }
-                          }}
-                          disabled={quoteMutation.isPending}
-                          className="btn-primary py-2 text-sm whitespace-nowrap"
-                        >
-                          Send Quote
-                        </button>
                         <button 
                           onClick={() => rejectMutation.mutate(activeBookingId)}
-                          disabled={rejectMutation.isPending}
-                          className="btn-secondary py-2 text-sm whitespace-nowrap text-rose hover:bg-rose/10"
+                          className="p-3 text-rose hover:bg-rose/10 rounded-xl transition-colors"
                         >
-                          Reject
+                          <X size={20} />
+                        </button>
+                        <button 
+                          onClick={() => quoteMutation.mutate({ bookingId: activeBookingId, amount: Number(quoteAmount) })}
+                          className="bg-navy text-white px-6 py-3 rounded-xl font-display font-semibold hover:bg-navy/90 transition-colors"
+                        >
+                          Send
                         </button>
                       </div>
-                    )}
-                    {requests.find(r => r.id === activeBookingId)?.status === 'QUOTED' && (
-                       <div className="text-center font-sans text-sm text-navy bg-navy/10 py-2 rounded">
-                          Waiting for customer to accept ₹{requests.find(r => r.id === activeBookingId)?.quotedAmount}
-                       </div>
-                    )}
-                    {requests.find(r => r.id === activeBookingId)?.status === 'ACCEPTED' && (
-                       <div className="text-center font-sans font-bold text-sm text-sage bg-sage/10 py-2 rounded flex items-center justify-center gap-2">
-                          <Check size={16} /> Booking Confirmed
-                       </div>
-                    )}
-                    {requests.find(r => r.id === activeBookingId)?.status === 'REJECTED' && (
-                       <div className="text-center font-sans font-bold text-sm text-rose bg-rose/10 py-2 rounded flex items-center justify-center gap-2">
-                          <X size={16} /> You rejected this request
-                       </div>
-                    )}
-                    {requests.find(r => r.id === activeBookingId)?.status === 'CANCELLED' && (
-                       <div className="text-center font-sans font-bold text-sm text-muted bg-stone py-2 rounded flex items-center justify-center gap-2">
-                          <X size={16} /> Customer cancelled this request
-                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+                  {requests.find(r => r.id === activeBookingId)?.status === 'QUOTED' && (
+                     <div className="p-4 border-b border-stone text-center font-sans text-sm text-navy bg-navy/5 font-medium">
+                        Waiting for customer to accept ₹{requests.find(r => r.id === activeBookingId)?.quotedAmount}
+                     </div>
+                  )}
+                  {requests.find(r => r.id === activeBookingId)?.status === 'ACCEPTED' && (
+                     <div className="p-4 border-b border-stone text-center font-sans font-bold text-sm text-sage bg-sage/5 flex items-center justify-center gap-2">
+                        <Check size={16} /> Booking Confirmed
+                     </div>
+                  )}
+                  {requests.find(r => r.id === activeBookingId)?.status === 'REJECTED' && (
+                     <div className="p-4 border-b border-stone text-center font-sans font-bold text-sm text-rose bg-rose/5 flex items-center justify-center gap-2">
+                        <X size={16} /> You rejected this request
+                     </div>
+                  )}
+                  {requests.find(r => r.id === activeBookingId)?.status === 'CANCELLED' && (
+                     <div className="p-4 border-b border-stone text-center font-sans font-bold text-sm text-muted bg-stone/20 flex items-center justify-center gap-2">
+                        <X size={16} /> Customer cancelled this request
+                     </div>
+                  )}
 
                   {/* Chat Interface */}
                   <div className="flex-1 overflow-hidden">

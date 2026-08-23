@@ -132,11 +132,11 @@ export default function VendorDetailPage() {
 
             {/* Reviews Section */}
             <div className="card-white p-8">
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center justify-between mb-8">
                 <h3 className="font-display font-semibold text-2xl text-ink">Reviews</h3>
                 <div className="flex items-center gap-1 bg-amber/10 text-amber px-3 py-1 rounded-full text-sm font-bold">
                   <Star size={16} fill="currentColor" />
-                  <span>{vendor.avgRating.toFixed(1)} ({vendor.totalReviews})</span>
+                  <span>{(vendor.avgRating || 0).toFixed(1)} ({vendor.totalReviews || 0})</span>
                 </div>
               </div>
               
@@ -179,7 +179,7 @@ export default function VendorDetailPage() {
                 <ul className="space-y-3 font-sans text-ink">
                   <li className="flex justify-between border-b border-stone pb-2">
                     <span className="text-muted">Pricing Unit</span>
-                    <span className="font-medium capitalize">{vendor.priceUnit.replace('_', ' ')}</span>
+                    <span className="font-medium capitalize">{vendor.priceUnit?.replace('_', ' ') || 'Not specified'}</span>
                   </li>
                   <li className="flex justify-between border-b border-stone pb-2">
                     <span className="text-muted">Service Radius</span>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Store, MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
 import { vendorService, type VendorProfile } from '../../services/vendorService'
@@ -83,9 +84,14 @@ export default function VendorDashboardPage() {
                 </div>
               </div>
               {!isEditing && (
-                <button onClick={handleEditClick} className="btn-secondary py-2 text-xs">
-                  Edit Profile
-                </button>
+                <div className="flex items-center gap-3">
+                  <Link to="/vendor/bookings" className="btn-primary py-2 px-4 text-xs bg-navy hover:bg-navy/90 text-white shadow-none">
+                    View Bookings
+                  </Link>
+                  <button onClick={handleEditClick} className="btn-secondary py-2 text-xs">
+                    Edit Profile
+                  </button>
+                </div>
               )}
             </div>
 

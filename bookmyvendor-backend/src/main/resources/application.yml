@@ -67,8 +67,8 @@ app:
     api-secret: ${CLOUDINARY_API_SECRET:your-api-secret}
 
   razorpay:
-    key-id: ${RAZORPAY_KEY_ID:your-key-id}
-    key-secret: ${RAZORPAY_KEY_SECRET:your-key-secret}
+    key-id: ${RAZORPAY_KEY_ID:rzp_test_TTKBXU9dM1qYAf}
+    key-secret: ${RAZORPAY_KEY_SECRET:sPLuoHzph9we5ER0K9LFWRdV}
 
 # Actuator
 management:

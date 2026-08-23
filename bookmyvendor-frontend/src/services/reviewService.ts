@@ -11,9 +11,15 @@ export interface ReviewResponse {
   createdAt: string
 }
 
+export interface ReviewRequest {
+  bookingId: string
+  rating: number
+  comment?: string
+}
+
 export const reviewService = {
   addReview: async (bookingId: string, rating: number, comment?: string) => {
-    const response = await api.post<ReviewResponse>('/reviews', {
+    const response = await api.post<ReviewResponse>('/api/v1/reviews', {
       bookingId,
       rating,
       comment
@@ -22,7 +28,7 @@ export const reviewService = {
   },
 
   getVendorReviews: async (vendorId: string) => {
-    const response = await api.get<ReviewResponse[]>(`/reviews/vendor/${vendorId}`)
+    const response = await api.get<ReviewResponse[]>(`/api/v1/reviews/vendor/${vendorId}`)
     return response.data
   }
 }

@@ -39,4 +39,15 @@ public class AdminController {
         VendorProfileDto updated = adminService.processKyc(vendorProfileId, action);
         return ResponseEntity.ok(ApiResponse.success(updated, "KYC status updated successfully"));
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<ApiResponse<List<com.bookmyvendor.admin.dto.AdminUserDto>>> getAllUsers() {
+        return ResponseEntity.ok(ApiResponse.success(adminService.getAllUsers(), "Users retrieved"));
+    }
+
+    @PostMapping("/users/{id}/toggle-block")
+    public ResponseEntity<ApiResponse<Void>> toggleUserBlock(@PathVariable UUID id) {
+        adminService.toggleUserBlock(id);
+        return ResponseEntity.ok(ApiResponse.success(null, "User block status updated"));
+    }
 }

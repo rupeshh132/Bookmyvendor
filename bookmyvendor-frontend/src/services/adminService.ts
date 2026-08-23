@@ -23,5 +23,14 @@ export const adminService = {
   processKyc: async (vendorProfileId: string, status: 'APPROVED' | 'REJECTED', rejectionNote?: string): Promise<VendorProfile> => {
     const res = await api.put(`/api/v1/admin/kyc/` + vendorProfileId, { status, rejectionNote })
     return res.data.data
+  },
+
+  getUsers: async (): Promise<any[]> => {
+    const res = await api.get('/api/v1/admin/users')
+    return res.data.data
+  },
+
+  toggleUserBlock: async (userId: string): Promise<void> => {
+    await api.post(`/api/v1/admin/users/${userId}/toggle-block`)
   }
 }
