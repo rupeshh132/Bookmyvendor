@@ -14,7 +14,11 @@ export const chatService = {
     const { accessToken } = useAuthStore.getState()
 
     stompClient = new Client({
-      webSocketFactory: () => createNativeWS((import.meta.env.VITE_API_URL || 'http://localhost:8080') + '/ws'),
+            webSocketFactory: () => {
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+        const wsUrl = baseUrl.replace(/^http/, 'ws') + '/ws';
+        return createNativeWS(wsUrl);
+      },
       connectHeaders: {
         Authorization: `Bearer ${accessToken ?? ''}`,
       },
@@ -48,3 +52,4 @@ export const chatService = {
     }
   },
 }
+
