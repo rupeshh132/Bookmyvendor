@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { adminService } from '../../services/adminService'
-import { Check, X, Ban } from 'lucide-react'
+import { Check, Ban } from 'lucide-react'
 
 export default function AdminUsersPage() {
   const queryClient = useQueryClient()

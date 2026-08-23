@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Calendar, Users, MessageSquare, Check, X, Clock, MessageCircle } from 'lucide-react'
+import { Calendar, Users, Check, X, Clock, MessageCircle } from 'lucide-react'
 import { bookingService } from '../../services/bookingService'
 import ChatRoom from '../../components/chat/ChatRoom'
 

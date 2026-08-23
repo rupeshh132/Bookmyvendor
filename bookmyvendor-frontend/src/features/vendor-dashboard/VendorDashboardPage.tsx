@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Store, MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
+import { MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
 import { vendorService, type VendorProfile } from '../../services/vendorService'
 import PortfolioManager from './components/PortfolioManager'
 
