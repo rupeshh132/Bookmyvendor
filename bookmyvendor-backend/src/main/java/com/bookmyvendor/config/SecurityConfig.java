@@ -41,12 +41,17 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Public Endpoints
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/v1/vendors/search", "/api/v1/vendors/{id}").permitAll()
+                .requestMatchers("/api/v1/vendors/search").permitAll()
+                // Explicitly protect /me before the wildcard {id}
+                .requestMatchers("/api/v1/vendors/me/**").hasRole("VENDOR")
+                // Now allow public access to public vendor profiles by ID
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/vendors/{id}").permitAll()
+                
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers("/error").permitAll()
                 
                 // Protected Endpoints
-                .requestMatchers("/api/v1/vendors/me/**").hasRole("VENDOR")
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 
                 // Any other request must be authenticated

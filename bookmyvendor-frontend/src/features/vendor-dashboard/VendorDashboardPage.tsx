@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Store, MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
-import { vendorService, VendorProfile } from '../../services/vendorService'
+import { vendorService, type VendorProfile } from '../../services/vendorService'
 import PortfolioManager from './components/PortfolioManager'
 
 
@@ -101,12 +101,14 @@ export default function VendorDashboardPage() {
                   <div>
                     <div className="flex items-center gap-2 text-muted mb-1"><MapPin size={16} /> <span className="font-sans text-xs tracking-widest uppercase">Location</span></div>
                     <p className="font-sans font-medium text-ink">{profile.city}{profile.state ? `, ${profile.state}` : ''}</p>
-                    <p className="font-sans text-sm text-muted mt-0.5">{profile.serviceRadiusKm} km radius</p>
+                    {profile.serviceRadiusKm && (
+                      <p className="font-sans text-sm text-muted mt-0.5">{profile.serviceRadiusKm} km radius</p>
+                    )}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 text-muted mb-1"><DollarSign size={16} /> <span className="font-sans text-xs tracking-widest uppercase">Pricing</span></div>
                     <p className="font-sans font-medium text-ink">₹{profile.basePrice || 'Not set'}</p>
-                    <p className="font-sans text-sm text-muted mt-0.5">{profile.priceUnit.replace('_', ' ')}</p>
+                    <p className="font-sans text-sm text-muted mt-0.5">{profile.priceUnit?.replace('_', ' ') || 'per event'}</p>
                   </div>
                   <div>
                     <div className="flex items-center gap-2 text-muted mb-1"><Info size={16} /> <span className="font-sans text-xs tracking-widest uppercase">Bio</span></div>

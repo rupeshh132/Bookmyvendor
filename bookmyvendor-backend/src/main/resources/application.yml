@@ -1,11 +1,23 @@
 spring:
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   application:
     name: bookmyvendor-backend
 
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/bookmyvendor}
-    username: ${DATABASE_USERNAME:bookmyvendor}
-    password: ${DATABASE_PASSWORD:bookmyvendor123}
+    url: jdbc:postgresql://ep-snowy-mud-aziy5l59.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_4wBe1MpNxtuQ
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -79,6 +91,13 @@ springdoc:
 logging:
   level:
     com.bookmyvendor: DEBUG
-    org.springframework.security: INFO
+    org.springframework.security: TRACE
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
+
+
+
+
+

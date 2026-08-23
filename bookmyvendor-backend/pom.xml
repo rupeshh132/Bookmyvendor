@@ -61,10 +61,10 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <scope>runtime</scope>
-    </dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            
+        </dependency>
 
     <!-- Flyway Migrations -->
     <dependency>
@@ -153,17 +153,18 @@
             <artifactId>cloudinary-http44</artifactId>
             <version>1.36.0</version>
         </dependency>
-            <!-- WebSocket support for Chat -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
+    
             <!-- Razorpay SDK for Payments -->
         <dependency>
             <groupId>com.razorpay</groupId>
             <artifactId>razorpay-java</artifactId>
             <version>1.4.6</version>
         </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+      </dependency>
+
     </dependencies>
 
   <build>
@@ -200,6 +201,11 @@
     </plugins>
   </build>
 </project>
+
+
+
+
+
 
 
 

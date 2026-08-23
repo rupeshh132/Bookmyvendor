@@ -107,6 +107,47 @@ public class BookingService {
         return BookingRequestDto.fromEntity(saved, getCustomerName(customerUserId, booking.getCustomer().getEmail()));
     }
 
+    @Transactional
+    public BookingRequestDto rejectRequest(UUID vendorUserId, UUID bookingId) {
+        VendorProfile profile = vendorProfileRepository.findByUserId(vendorUserId)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor profile not found"));
+
+        BookingRequest booking = bookingRequestRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getVendor().getId().equals(profile.getId())) {
+            throw new IllegalArgumentException("Not authorized");
+        }
+
+        if (booking.getStatus() != BookingRequest.RequestStatus.PENDING) {
+            throw new IllegalStateException("Cannot reject a booking that is already ACCEPTED/REJECTED/CANCELLED");
+        }
+
+        booking.setStatus(BookingRequest.RequestStatus.REJECTED);
+        BookingRequest saved = bookingRequestRepository.save(booking);
+
+        return BookingRequestDto.fromEntity(saved, getCustomerName(saved.getCustomer().getId(), saved.getCustomer().getEmail()));
+    }
+
+    @Transactional
+    public BookingRequestDto cancelRequest(UUID customerUserId, UUID bookingId) {
+        BookingRequest booking = bookingRequestRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getCustomer().getId().equals(customerUserId)) {
+            throw new IllegalArgumentException("Not authorized");
+        }
+
+        if (booking.getStatus() != BookingRequest.RequestStatus.PENDING && booking.getStatus() != BookingRequest.RequestStatus.QUOTED) {
+            throw new IllegalStateException("Cannot cancel a booking that is already ACCEPTED/REJECTED/CANCELLED");
+        }
+
+        booking.setStatus(BookingRequest.RequestStatus.CANCELLED);
+        BookingRequest saved = bookingRequestRepository.save(booking);
+
+        return BookingRequestDto.fromEntity(saved, getCustomerName(customerUserId, booking.getCustomer().getEmail()));
+    }
+
     private String getCustomerName(UUID userId, String fallbackEmail) {
         return customerProfileRepository.findByUserId(userId)
                 .map(CustomerProfile::getFullName)

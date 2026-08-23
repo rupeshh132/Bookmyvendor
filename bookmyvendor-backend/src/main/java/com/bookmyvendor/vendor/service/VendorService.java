@@ -26,6 +26,7 @@ public class VendorService {
     private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     // ── Vendor Dashboard: Get Own Profile ───────────────────────────
+    @Transactional(readOnly = true)
     public VendorProfileDto getVendorProfile(UUID userId) {
         VendorProfile profile = vendorProfileRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Vendor profile not found"));
@@ -59,9 +60,10 @@ public class VendorService {
     }
 
     // ── Customer View: Search by Category & City ────────────────────
+    @Transactional(readOnly = true)
     public List<VendorProfileDto> searchVendors(String category, String city) {
         List<VendorProfile> vendors = vendorProfileRepository
-                .findByCategoryAndCityAndKycStatus(category, city, VendorProfile.KycStatus.APPROVED);
+                .findByCategoryIgnoreCaseAndCityIgnoreCaseAndKycStatus(category, city, VendorProfile.KycStatus.APPROVED);
                 
         return vendors.stream()
                 .map(VendorProfileDto::fromEntity)
@@ -69,6 +71,7 @@ public class VendorService {
     }
 
     // ── Customer View: Search by Radius (PostGIS) ───────────────────
+    @Transactional(readOnly = true)
     public List<VendorProfileDto> searchVendorsInRadius(String category, double lat, double lon, double radiusKm) {
         double radiusMeters = radiusKm * 1000;
         List<VendorProfile> vendors = vendorProfileRepository
@@ -80,6 +83,7 @@ public class VendorService {
     }
 
     // ── Public View: Get Single Vendor by ID ────────────────────────
+    @Transactional(readOnly = true)
     public VendorProfileDto getVendorById(UUID vendorId) {
         VendorProfile profile = vendorProfileRepository.findById(vendorId)
                 .orElseThrow(() -> new IllegalArgumentException("Vendor not found"));

@@ -30,29 +30,7 @@ public class BookingController {
         UUID customerUserId = UUID.fromString(principal.getName());
         BookingRequestDto result = bookingService.createRequest(customerUserId, req);
         return ResponseEntity.ok(ApiResponse.success(result, "Booking request sent successfully"));
-        // -- Vendor: Send Quote ----------------------------------------
-    @PutMapping("/{id}/quote")
-    public ResponseEntity<ApiResponse<BookingRequestDto>> sendQuote(
-            Principal principal,
-            @PathVariable UUID id,
-            @RequestParam BigDecimal amount
-    ) {
-        UUID vendorUserId = UUID.fromString(principal.getName());
-        BookingRequestDto result = bookingService.sendQuote(vendorUserId, id, amount);
-        return ResponseEntity.ok(ApiResponse.success(result, "Quote sent successfully"));
     }
-
-    // -- Customer: Accept Quote ------------------------------------
-    @PutMapping("/{id}/accept")
-    public ResponseEntity<ApiResponse<BookingRequestDto>> acceptQuote(
-            Principal principal,
-            @PathVariable UUID id
-    ) {
-        UUID customerUserId = UUID.fromString(principal.getName());
-        BookingRequestDto result = bookingService.acceptQuote(customerUserId, id);
-        return ResponseEntity.ok(ApiResponse.success(result, "Quote accepted successfully"));
-    }
-}
 
     // ── Customer: View own requests ───────────────────────────────
     @GetMapping("/customer")
@@ -60,29 +38,7 @@ public class BookingController {
         UUID customerUserId = UUID.fromString(principal.getName());
         List<BookingRequestDto> results = bookingService.getMyRequestsAsCustomer(customerUserId);
         return ResponseEntity.ok(ApiResponse.success(results, "Fetched customer requests"));
-        // -- Vendor: Send Quote ----------------------------------------
-    @PutMapping("/{id}/quote")
-    public ResponseEntity<ApiResponse<BookingRequestDto>> sendQuote(
-            Principal principal,
-            @PathVariable UUID id,
-            @RequestParam BigDecimal amount
-    ) {
-        UUID vendorUserId = UUID.fromString(principal.getName());
-        BookingRequestDto result = bookingService.sendQuote(vendorUserId, id, amount);
-        return ResponseEntity.ok(ApiResponse.success(result, "Quote sent successfully"));
     }
-
-    // -- Customer: Accept Quote ------------------------------------
-    @PutMapping("/{id}/accept")
-    public ResponseEntity<ApiResponse<BookingRequestDto>> acceptQuote(
-            Principal principal,
-            @PathVariable UUID id
-    ) {
-        UUID customerUserId = UUID.fromString(principal.getName());
-        BookingRequestDto result = bookingService.acceptQuote(customerUserId, id);
-        return ResponseEntity.ok(ApiResponse.success(result, "Quote accepted successfully"));
-    }
-}
 
     // ── Vendor: View incoming requests ────────────────────────────
     @GetMapping("/vendor")
@@ -90,7 +46,9 @@ public class BookingController {
         UUID vendorUserId = UUID.fromString(principal.getName());
         List<BookingRequestDto> results = bookingService.getMyRequestsAsVendor(vendorUserId);
         return ResponseEntity.ok(ApiResponse.success(results, "Fetched vendor requests"));
-        // -- Vendor: Send Quote ----------------------------------------
+    }
+
+    // ── Vendor: Send Quote ────────────────────────────────────────
     @PutMapping("/{id}/quote")
     public ResponseEntity<ApiResponse<BookingRequestDto>> sendQuote(
             Principal principal,
@@ -102,7 +60,7 @@ public class BookingController {
         return ResponseEntity.ok(ApiResponse.success(result, "Quote sent successfully"));
     }
 
-    // -- Customer: Accept Quote ------------------------------------
+    // ── Customer: Accept Quote ────────────────────────────────────
     @PutMapping("/{id}/accept")
     public ResponseEntity<ApiResponse<BookingRequestDto>> acceptQuote(
             Principal principal,
@@ -112,28 +70,26 @@ public class BookingController {
         BookingRequestDto result = bookingService.acceptQuote(customerUserId, id);
         return ResponseEntity.ok(ApiResponse.success(result, "Quote accepted successfully"));
     }
-}
-    // -- Vendor: Send Quote ----------------------------------------
-    @PutMapping("/{id}/quote")
-    public ResponseEntity<ApiResponse<BookingRequestDto>> sendQuote(
+
+    // ── Vendor: Reject Request ────────────────────────────────────
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<ApiResponse<BookingRequestDto>> rejectRequest(
             Principal principal,
-            @PathVariable UUID id,
-            @RequestParam BigDecimal amount
+            @PathVariable UUID id
     ) {
         UUID vendorUserId = UUID.fromString(principal.getName());
-        BookingRequestDto result = bookingService.sendQuote(vendorUserId, id, amount);
-        return ResponseEntity.ok(ApiResponse.success(result, "Quote sent successfully"));
+        BookingRequestDto result = bookingService.rejectRequest(vendorUserId, id);
+        return ResponseEntity.ok(ApiResponse.success(result, "Booking request rejected"));
     }
 
-    // -- Customer: Accept Quote ------------------------------------
-    @PutMapping("/{id}/accept")
-    public ResponseEntity<ApiResponse<BookingRequestDto>> acceptQuote(
+    // ── Customer: Cancel Request ──────────────────────────────────
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<ApiResponse<BookingRequestDto>> cancelRequest(
             Principal principal,
             @PathVariable UUID id
     ) {
         UUID customerUserId = UUID.fromString(principal.getName());
-        BookingRequestDto result = bookingService.acceptQuote(customerUserId, id);
-        return ResponseEntity.ok(ApiResponse.success(result, "Quote accepted successfully"));
+        BookingRequestDto result = bookingService.cancelRequest(customerUserId, id);
+        return ResponseEntity.ok(ApiResponse.success(result, "Booking request cancelled"));
     }
 }
-

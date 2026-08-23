@@ -14,8 +14,8 @@ import java.util.UUID;
 public interface VendorProfileRepository extends JpaRepository<VendorProfile, UUID> {
     Optional<VendorProfile> findByUserId(UUID userId);
 
-    // Basic search by category and city
-    List<VendorProfile> findByCategoryAndCityAndKycStatus(
+    // Basic search by category and city (Case Insensitive)
+    List<VendorProfile> findByCategoryIgnoreCaseAndCityIgnoreCaseAndKycStatus(
             String category, 
             String city, 
             VendorProfile.KycStatus kycStatus
@@ -24,7 +24,7 @@ public interface VendorProfileRepository extends JpaRepository<VendorProfile, UU
     // Advanced search: PostGIS radius search (native query) using ST_DWithin
     // Requires lat/lon input and distance in meters
     @Query(value = "SELECT * FROM vendor_profiles v " +
-            "WHERE v.category = :category " +
+            "WHERE v.category ILIKE :category " +
             "AND v.kyc_status = 'APPROVED' " +
             "AND v.deleted_at IS NULL " +
             "AND ST_DWithin(v.location_point, ST_MakePoint(:lon, :lat)::geography, :radiusMeters) " +

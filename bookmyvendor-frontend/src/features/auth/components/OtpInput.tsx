@@ -1,4 +1,4 @@
-import { useRef, KeyboardEvent } from 'react'
+import React, { useRef, type KeyboardEvent } from 'react'
 
 interface OtpInputProps {
   value: string

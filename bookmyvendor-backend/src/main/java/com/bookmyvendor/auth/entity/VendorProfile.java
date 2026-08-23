@@ -36,7 +36,7 @@ public class VendorProfile {
 
     private String state;
 
-    @Column(name = "location_point", columnDefinition = "geometry(Point,4326)")
+    @Column(name = "location_point", columnDefinition = "geography(Point,4326)")
     private Point locationPoint;
 
     @Column(name = "service_radius_km")
@@ -51,6 +51,7 @@ public class VendorProfile {
     @Column(name = "price_unit")
     private String priceUnit = "per_event";
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "kyc_status", nullable = false)
     private KycStatus kycStatus = KycStatus.PENDING;

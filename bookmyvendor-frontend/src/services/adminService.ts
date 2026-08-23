@@ -1,5 +1,5 @@
 import api from './api'
-import { VendorProfile } from './vendorService'
+import type { VendorProfile } from './vendorService'
 
 export interface AdminDashboardStats {
   totalCustomers: number

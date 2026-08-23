@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { useAuthStore } from '../../lib/authStore'
 
 const navLinks = [
   { label: 'Find Vendors', to: '/vendors' },
@@ -10,6 +11,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { isAuthenticated, user, logout } = useAuthStore()
 
   return (
     <>
@@ -42,14 +44,27 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* CTA buttons */}
+        {/* CTA / Auth Buttons */}
         <div className="hidden md:flex items-center gap-2">
-          <Link to="/login" className="btn-ghost py-2 px-4 text-xs">
-            Login
-          </Link>
-          <Link to="/register" className="btn-primary py-2 px-5 text-xs">
-            Get Started
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to={user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} className="btn-ghost py-2 px-4 text-xs">
+                Dashboard
+              </Link>
+              <button onClick={() => { logout(); setMobileOpen(false); window.location.href='/login' }} className="btn-primary py-2 px-5 text-xs bg-rose hover:bg-rose/90 shadow-none">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn-ghost py-2 px-4 text-xs">
+                Login
+              </Link>
+              <Link to="/register" className="btn-primary py-2 px-5 text-xs">
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -62,7 +77,7 @@ export default function Navbar() {
         </button>
       </header>
 
-      {/* ── Mobile Menu Overlay ── */}
+      {/* 📱 Mobile Menu Overlay 📱 */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-ivory/95 backdrop-blur-sm flex flex-col pt-24 px-6">
           <nav className="flex flex-col gap-2">
@@ -83,20 +98,25 @@ export default function Navbar() {
           </nav>
 
           <div className="flex flex-col gap-3 mt-8">
-            <Link
-              to="/login"
-              onClick={() => setMobileOpen(false)}
-              className="btn-secondary w-full text-center py-4"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              onClick={() => setMobileOpen(false)}
-              className="btn-primary w-full text-center py-4"
-            >
-              Get Started
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to={user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} onClick={() => setMobileOpen(false)} className="btn-secondary w-full text-center py-4">
+                  Dashboard
+                </Link>
+                <button onClick={() => { logout(); setMobileOpen(false); window.location.href='/login' }} className="btn-primary w-full text-center py-4 bg-rose hover:bg-rose/90 shadow-none">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" onClick={() => setMobileOpen(false)} className="btn-secondary w-full text-center py-4">
+                  Login
+                </Link>
+                <Link to="/register" onClick={() => setMobileOpen(false)} className="btn-primary w-full text-center py-4">
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

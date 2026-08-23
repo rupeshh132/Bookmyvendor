@@ -1,0 +1,16 @@
+{
+  "name": "BookMyVendor",
+  "short_name": "BookMyVendor",
+  "description": "India's Most Trusted Event Vendor Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F6F3EF",
+  "theme_color": "#16232E",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

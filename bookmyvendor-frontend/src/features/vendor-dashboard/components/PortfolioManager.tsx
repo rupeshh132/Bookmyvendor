@@ -36,15 +36,22 @@ export default function PortfolioManager() {
   })
 
   // ── Drag & Drop Handlers ──
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach(file => {
-      // Validate file size (max 5MB)
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    setUploadError('')
+    for (const file of acceptedFiles) {
       if (file.size > 5 * 1024 * 1024) {
         setUploadError(`File ${file.name} is too large (max 5MB)`)
-        return
+        continue
       }
-      uploadMutation.mutate(file)
-    })
+      try {
+        await uploadMutation.mutateAsync(file)
+        // Add a small 1s delay to prevent Cloudinary rate limiting
+        await new Promise(resolve => setTimeout(resolve, 1000))
+      } catch (err: any) {
+        // Error is already handled by useMutation's onError, but we stop the loop
+        break
+      }
+    }
   }, [uploadMutation])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

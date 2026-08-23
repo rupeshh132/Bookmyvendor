@@ -54,7 +54,7 @@ export const vendorService = {
 
   // Public: Get Vendor Portfolio
   getVendorPortfolio: async (vendorId: string): Promise<PortfolioImage[]> => {
-    const res = await api.get(/api/v1/vendors/ + vendorId + /portfolio)
+    const res = await api.get(`/api/v1/vendors/${vendorId}/portfolio`)
     return res.data.data
   },
 
@@ -76,7 +76,8 @@ export const vendorService = {
 
   // Protected: Delete Portfolio Image
   deletePortfolioImage: async (imageId: string): Promise<void> => {
-    await api.delete(/api/v1/vendors/me/portfolio/ + imageId)
+    await api.delete(`/api/v1/vendors/me/portfolio/${imageId}`)
   }
 }
+
 

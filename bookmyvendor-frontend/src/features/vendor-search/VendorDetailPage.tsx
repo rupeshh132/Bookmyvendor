@@ -4,7 +4,8 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import { MapPin, Star, ShieldCheck, ArrowLeft, Calendar, Users, MessageSquare } from 'lucide-react'
 import { vendorService } from '../../services/vendorService'
 import { bookingService } from '../../services/bookingService'
-import useAuthStore from '../../lib/authStore'
+import { reviewService } from '../../services/reviewService'
+import { useAuthStore } from '../../lib/authStore'
 
 export default function VendorDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -23,6 +24,12 @@ export default function VendorDetailPage() {
   const { data: vendor, isLoading: vendorLoading } = useQuery({
     queryKey: ['vendor', id],
     queryFn: () => vendorService.getVendor(id!),
+    enabled: !!id,
+  })
+
+  const { data: reviews = [] } = useQuery({
+    queryKey: ['reviews', id],
+    queryFn: () => reviewService.getVendorReviews(id!),
     enabled: !!id,
   })
 
@@ -98,10 +105,10 @@ export default function VendorDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* ── Main Content ── */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             <div className="card-white p-8">
-              <h3 className="font-display font-semibold text-2xl text-ink mb-4">About the Vendor</h3>
-              <p className="font-sans text-ink leading-relaxed whitespace-pre-wrap">{vendor.bio || 'This vendor hasn\'t provided a bio yet.'}</p>
+              <h2 className="font-display font-semibold text-3xl text-ink mb-4">About the service</h2>
+              <p className="font-sans text-ink leading-relaxed whitespace-pre-wrap">{vendor.bio || "No bio provided."}</p>
             </div>
 
             <div className="card-white p-8">
@@ -120,6 +127,47 @@ export default function VendorDetailPage() {
                 </div>
               ) : (
                 <p className="font-sans text-muted">No portfolio images uploaded yet.</p>
+              )}
+            </div>
+
+            {/* Reviews Section */}
+            <div className="card-white p-8">
+              <div className="flex items-center gap-4 mb-6">
+                <h3 className="font-display font-semibold text-2xl text-ink">Reviews</h3>
+                <div className="flex items-center gap-1 bg-amber/10 text-amber px-3 py-1 rounded-full text-sm font-bold">
+                  <Star size={16} fill="currentColor" />
+                  <span>{vendor.avgRating.toFixed(1)} ({vendor.totalReviews})</span>
+                </div>
+              </div>
+              
+              {reviews.length > 0 ? (
+                <div className="space-y-6">
+                  {reviews.map(review => (
+                    <div key={review.id} className="border-b border-stone last:border-0 pb-6 last:pb-0">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-sans font-bold text-ink">{review.customerName}</span>
+                        <span className="text-xs text-muted">
+                          {new Date(review.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 mb-3">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star 
+                            key={star} 
+                            size={14} 
+                            className={star <= review.rating ? 'text-amber' : 'text-stone'} 
+                            fill={star <= review.rating ? 'currentColor' : 'none'} 
+                          />
+                        ))}
+                      </div>
+                      {review.comment && (
+                        <p className="font-sans text-ink text-sm leading-relaxed">{review.comment}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="font-sans text-muted">No reviews yet. Be the first to review after booking!</p>
               )}
             </div>
           </div>
@@ -195,3 +243,4 @@ export default function VendorDetailPage() {
     </div>
   )
 }
+

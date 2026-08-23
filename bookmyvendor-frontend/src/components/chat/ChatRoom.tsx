@@ -3,14 +3,14 @@ import { Send } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { chatService } from '../../services/chatService'
 import { bookingService } from '../../services/bookingService'
-import useAuthStore from '../../lib/authStore'
+import { useAuthStore } from '../../lib/authStore'
 import { jwtDecode } from 'jwt-decode'
 
 export default function ChatRoom({ bookingId }: { bookingId: string }) {
   const [messages, setMessages] = useState<any[]>([])
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { token } = useAuthStore()
+  const { accessToken: token } = useAuthStore()
 
   // Decode JWT to get my user ID
   let myUserId = ''
@@ -92,3 +92,4 @@ export default function ChatRoom({ bookingId }: { bookingId: string }) {
     </div>
   )
 }
+

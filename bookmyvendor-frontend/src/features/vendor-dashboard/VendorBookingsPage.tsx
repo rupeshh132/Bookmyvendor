@@ -18,6 +18,19 @@ export default function VendorBookingsPage() {
     mutationFn: ({ bookingId, amount }: { bookingId: string, amount: number }) => bookingService.sendQuote(bookingId, amount),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vendorBookings'] })
+    },
+    onError: (error: any) => {
+      alert(error.response?.data?.message || 'Failed to send quote')
+    }
+  })
+
+  const rejectMutation = useMutation({
+    mutationFn: (bookingId: string) => bookingService.rejectRequest(bookingId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vendorBookings'] })
+    },
+    onError: (error: any) => {
+      alert(error.response?.data?.message || 'Failed to reject request')
     }
   })
 
@@ -108,6 +121,13 @@ export default function VendorBookingsPage() {
                         >
                           Send Quote
                         </button>
+                        <button 
+                          onClick={() => rejectMutation.mutate(activeBookingId)}
+                          disabled={rejectMutation.isPending}
+                          className="btn-secondary py-2 text-sm whitespace-nowrap text-rose hover:bg-rose/10"
+                        >
+                          Reject
+                        </button>
                       </div>
                     )}
                     {requests.find(r => r.id === activeBookingId)?.status === 'QUOTED' && (
@@ -118,6 +138,16 @@ export default function VendorBookingsPage() {
                     {requests.find(r => r.id === activeBookingId)?.status === 'ACCEPTED' && (
                        <div className="text-center font-sans font-bold text-sm text-sage bg-sage/10 py-2 rounded flex items-center justify-center gap-2">
                           <Check size={16} /> Booking Confirmed
+                       </div>
+                    )}
+                    {requests.find(r => r.id === activeBookingId)?.status === 'REJECTED' && (
+                       <div className="text-center font-sans font-bold text-sm text-rose bg-rose/10 py-2 rounded flex items-center justify-center gap-2">
+                          <X size={16} /> You rejected this request
+                       </div>
+                    )}
+                    {requests.find(r => r.id === activeBookingId)?.status === 'CANCELLED' && (
+                       <div className="text-center font-sans font-bold text-sm text-muted bg-stone py-2 rounded flex items-center justify-center gap-2">
+                          <X size={16} /> Customer cancelled this request
                        </div>
                     )}
                   </div>

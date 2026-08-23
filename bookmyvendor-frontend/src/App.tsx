@@ -17,6 +17,7 @@ import CustomerBookingsPage from './features/vendor-search/CustomerBookingsPage'
 import VendorBookingsPage from './features/vendor-dashboard/VendorBookingsPage'
 
 import VendorDashboardPage from './features/vendor-dashboard/VendorDashboardPage'
+import HomePage from './features/home/HomePage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,17 +48,18 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           {/* ── Main App Routes (With Navbar) ── */}
-          <Route element={<MainLayout />}>
-            <Route path="/" element={
-              <div className="bmv-container bmv-section text-center">
-                <h1 className="font-display text-hero text-navy mb-4">BookMyVendor</h1>
-                <p className="font-sans text-muted mb-8">Sprint 1 — Authentication Complete ✅</p>
-                <div className="flex justify-center gap-4">
-                  <a href="/login" className="btn-primary">Login Page</a>
-                  <a href="/register" className="btn-secondary">Register Page</a>
-                </div>
-              </div>
-            } />
+                    <Route element={<MainLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/vendors" element={<VendorSearchPage />} />
+            <Route path="/vendors/:id" element={<VendorDetailPage />} />
+            <Route path="/dashboard" element={<CustomerBookingsPage />} />
+            
+            {/* Vendor Routes */}
+            <Route path="/vendor/dashboard" element={<VendorDashboardPage />} />
+            <Route path="/vendor/bookings" element={<VendorBookingsPage />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminDashboardPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -66,6 +68,10 @@ function App() {
 }
 
 export default App
+
+
+
+
 
 
 

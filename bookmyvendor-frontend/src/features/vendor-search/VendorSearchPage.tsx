@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, MapPin, Star, Filter, ArrowRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { vendorService, VendorProfile } from '../../services/vendorService'
+import { vendorService, type VendorProfile } from '../../services/vendorService'
 
 const CATEGORIES = ['PHOTOGRAPHER', 'CATERER', 'DECORATOR', 'VENUE', 'MAKEUP']
 

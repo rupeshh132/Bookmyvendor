@@ -1,22 +1,24 @@
-import { Client } from '@stomp/stompjs'
-import SockJS from 'sockjs-client'
-import useAuthStore from './authStore'
+﻿import { Client } from '@stomp/stompjs'
+import { useAuthStore } from '../lib/authStore'
 
 let stompClient: Client | null = null
 
+// Use native WebSocket (avoids SockJS unload policy violation in modern browsers)
+function createNativeWS(url: string) {
+  const wsUrl = url.replace(/^http/, 'ws')
+  return new WebSocket(wsUrl)
+}
+
 export const chatService = {
   connect: (onMessageReceived: (msg: any) => void, bookingId: string) => {
-    const { token } = useAuthStore.getState()
-    
+    const { accessToken } = useAuthStore.getState()
+
     stompClient = new Client({
-      // Use SockJS fallback if standard WS fails or for better compat
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      webSocketFactory: () => createNativeWS('http://localhost:8080/ws'),
       connectHeaders: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${accessToken ?? ''}`,
       },
-      debug: (str) => {
-        // console.log(str)
-      },
+      debug: () => { /* silent in production */ },
       onConnect: () => {
         stompClient?.subscribe(`/topic/booking/${bookingId}`, (message) => {
           if (message.body) {
@@ -24,24 +26,25 @@ export const chatService = {
           }
         })
       },
+      reconnectDelay: 5000,
     })
-    
+
     stompClient.activate()
   },
-  
+
   disconnect: () => {
     if (stompClient) {
       stompClient.deactivate()
       stompClient = null
     }
   },
-  
+
   sendMessage: (bookingId: string, content: string) => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({
         destination: '/app/chat.send',
-        body: JSON.stringify({ bookingRequestId: bookingId, content })
+        body: JSON.stringify({ bookingRequestId: bookingId, content }),
       })
     }
-  }
+  },
 }
