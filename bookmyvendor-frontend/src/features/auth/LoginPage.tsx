@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, Phone, Mail, ArrowRight } from 'lucide-react'
-import { useGoogleLogin } from '@react-oauth/google'
+import { signInWithPopup } from 'firebase/auth';
+import { auth as firebaseAuth, googleProvider } from '../../lib/firebase';
 import { authService } from '../../services/authService'
 import { useAuthStore } from '../../lib/authStore'
 import OtpInput from './components/OtpInput'
@@ -75,32 +76,21 @@ export default function LoginPage() {
     }
   }
 
-  // ── Google login ─────────────────────────────────────────────
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (response) => {
-      try {
-        setLoading(true)
-        // Get user info from Google
-        const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${response.access_token}` }
-        }).then(r => r.json())
-
-        const auth = await authService.googleLogin({
-          googleId: userInfo.sub,
-          email: userInfo.email,
-          name: userInfo.name,
-          picture: userInfo.picture,
-        })
-        setAuth(auth)
-        navigate(getDashboardPath(auth.user.role))
-      } catch (err: any) {
-        setError('Google login failed. Please try again.')
-      } finally {
-        setLoading(false)
-      }
-    },
-    onError: () => setError('Google login cancelled'),
-  })
+  // 🌟 Google login 🌟
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true)
+      const result = await signInWithPopup(firebaseAuth, googleProvider);
+      const idToken = await result.user.getIdToken();
+      const auth = await authService.googleLogin({ idToken });
+      setAuth(auth)
+      navigate(getDashboardPath(auth.user.role))
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message || 'Google login failed')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // ── Timer for OTP resend ─────────────────────────────────────
   const startTimer = () => {
@@ -323,7 +313,7 @@ export default function LoginPage() {
 
           {/* ── Google login ── */}
           <button
-            onClick={() => googleLogin()}
+            onClick={handleGoogleLogin}
             disabled={loading}
             className="w-full flex items-center justify-center gap-3 bg-white border border-stone rounded-full py-3.5 px-6 font-sans font-semibold text-sm text-ink hover:border-navy hover:shadow-card transition-all duration-200"
           >
@@ -348,3 +338,5 @@ export default function LoginPage() {
     </div>
   )
 }
+
+

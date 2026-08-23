@@ -15,6 +15,7 @@ export interface VendorProfile {
   totalReviews: number
   trustScore: number
   kycStatus: 'PENDING' | 'UNDER_REVIEW' | 'APPROVED' | 'REJECTED'
+  idProofUrl?: string
   isFeatured: boolean
   latitude?: number
   longitude?: number
@@ -79,5 +80,6 @@ export const vendorService = {
     await api.delete(`/api/v1/vendors/me/portfolio/${imageId}`)
   }
 }
+
 
 

@@ -54,12 +54,7 @@ export const authService = {
   },
 
   // Google OAuth login
-  googleLogin: async (data: {
-    googleId: string
-    email: string
-    name: string
-    picture?: string
-  }): Promise<AuthResponse> => {
+  googleLogin: async (data: { idToken: string }): Promise<AuthResponse> => {
     const res = await api.post('/api/v1/auth/google', data)
     return res.data.data
   },
@@ -76,3 +71,4 @@ export const authService = {
     return res.data.message
   },
 }
+
