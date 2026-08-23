@@ -1,4 +1,4 @@
-﻿import { Client } from '@stomp/stompjs'
+import { Client } from '@stomp/stompjs'
 import { useAuthStore } from '../lib/authStore'
 
 let stompClient: Client | null = null
@@ -14,7 +14,7 @@ export const chatService = {
     const { accessToken } = useAuthStore.getState()
 
     stompClient = new Client({
-      webSocketFactory: () => createNativeWS('http://localhost:8080/ws'),
+      webSocketFactory: () => createNativeWS((import.meta.env.VITE_API_URL || 'http://localhost:8080') + '/ws'),
       connectHeaders: {
         Authorization: `Bearer ${accessToken ?? ''}`,
       },
