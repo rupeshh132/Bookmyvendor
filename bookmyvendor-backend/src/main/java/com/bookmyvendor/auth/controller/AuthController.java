@@ -51,17 +51,14 @@ public class AuthController {
     // Frontend sends Google ID token → backend verifies and issues JWT
     @PostMapping("/google")
     public ResponseEntity<ApiResponse<AuthResponse>> googleLogin(@RequestBody Map<String, String> body) {
-        String googleId    = body.get("googleId");
-        String email       = body.get("email");
-        String name        = body.get("name");
-        String picture     = body.get("picture");
+        String idToken = body.get("idToken");
 
-        if (googleId == null || email == null) {
+        if (idToken == null) {
             return ResponseEntity.badRequest()
-                    .body(ApiResponse.error("googleId and email are required"));
+                    .body(ApiResponse.error("idToken is required"));
         }
 
-        AuthResponse auth = authService.loginWithGoogle(googleId, email, name, picture);
+        AuthResponse auth = authService.loginWithGoogle(idToken);
         return ResponseEntity.ok(ApiResponse.success(auth, "Google login successful"));
     }
 

@@ -165,49 +165,51 @@ public class AuthService {
     // (Called after frontend sends Google ID token)
     // ══════════════════════════════════════════════════════════════
     @Transactional
-    public AuthResponse loginWithGoogle(String googleId, String email, String name, String picture) {
-        // Check if already linked
-        OAuthAccount oauthAccount = oAuthAccountRepository
-                .findByProviderAndProviderId(OAuthAccount.OAuthProvider.GOOGLE, googleId)
-                .orElse(null);
+    public AuthResponse loginWithGoogle(String idToken) {
+        try {
+            com.google.firebase.auth.FirebaseToken decodedToken = com.google.firebase.auth.FirebaseAuth.getInstance().verifyIdToken(idToken);
+            String googleId = decodedToken.getUid();
+            String email = decodedToken.getEmail();
+            String name = (String) decodedToken.getClaims().get("name");
 
-        User user;
-        if (oauthAccount != null) {
-            // Existing Google user — just login
-            user = oauthAccount.getUser();
-        } else {
-            // Check if email already exists (LOCAL account)
-            user = userRepository.findByEmail(email).orElse(null);
-            if (user != null && user.getAuthProvider() == User.AuthProvider.LOCAL) {
-                // Link Google to existing local account
-                user.setEmailVerified(true);
-                        userRepository.save(user);
-
-
-            } else if (user == null) {
-                // Brand new user via Google
-                user = User.builder()
-                        .email(email)
-                        .authProvider(User.AuthProvider.GOOGLE)
-                        .role(User.Role.CUSTOMER)
-                        .isEmailVerified(true)
-                        .isActive(true)
+            OAuthAccount oauthAccount = oAuthAccountRepository
+                    .findByProviderAndProviderId(OAuthAccount.OAuthProvider.GOOGLE, googleId)
+                    .orElse(null);
+    
+            User user;
+            if (oauthAccount != null) {
+                user = oauthAccount.getUser();
+            } else {
+                user = userRepository.findByEmail(email).orElse(null);
+                if (user != null && user.getAuthProvider() == User.AuthProvider.LOCAL) {
+                    user.setEmailVerified(true);
+                    userRepository.save(user);
+                } else if (user == null) {
+                                        user = User.builder()
+                            .email(email)
+                            
+                            .phone("GOOG_" + googleId.substring(0, Math.min(10, googleId.length())))
+                            .passwordHash("")
+                            .authProvider(User.AuthProvider.GOOGLE)
+                            .role(User.Role.CUSTOMER)
+                            .isEmailVerified(true)
+                            .isActive(true)
+                            .build();
+                    userRepository.save(user);
+                }
+                OAuthAccount newOAuth = OAuthAccount.builder()
+                        .user(user)
+                        .provider(OAuthAccount.OAuthProvider.GOOGLE)
+                        .providerId(googleId)
+                        .providerEmail(email)
                         .build();
-                        userRepository.save(user);
-
-
+                oAuthAccountRepository.save(newOAuth);
             }
-            // Save OAuth account link
-            OAuthAccount newOAuth = OAuthAccount.builder()
-                    .user(user)
-                    .provider(OAuthAccount.OAuthProvider.GOOGLE)
-                    .providerId(googleId)
-                    .providerEmail(email)
-                    .build();
-            oAuthAccountRepository.save(newOAuth);
+            return buildAuthResponse(user, name, false);
+        } catch (Exception e) {
+            log.error("Firebase token verification failed. Exception: ", e); e.printStackTrace();
+            throw new IllegalArgumentException("Invalid Google token");
         }
-
-        return buildAuthResponse(user, name, false);
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -312,5 +314,10 @@ public class AuthService {
         }
     }
 }
+
+
+
+
+
 
 

@@ -42,3 +42,4 @@ logs/
 
 # Docker
 docker-compose.override.yml
+firebase-service-account.json
