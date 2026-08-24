@@ -45,10 +45,10 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-white text-lg font-medium mb-6">Top Categories</h4>
             <ul className="flex flex-col gap-3 font-sans text-sm text-stone/70">
-              <li><Link to="/vendors?category=PHOTOGRAPHER" className="hover:text-terracotta transition-colors">Wedding Photographers</Link></li>
-              <li><Link to="/vendors?category=VENUE" className="hover:text-terracotta transition-colors">Luxury Venues</Link></li>
-              <li><Link to="/vendors?category=DECORATOR" className="hover:text-terracotta transition-colors">Event Decorators</Link></li>
-              <li><Link to="/vendors?category=CATERER" className="hover:text-terracotta transition-colors">Catering Services</Link></li>
+              <li><Link to="/categories/wedding-photographers" className="hover:text-terracotta transition-colors">Wedding Photographers</Link></li>
+              <li><Link to="/categories/luxury-venues" className="hover:text-terracotta transition-colors">Luxury Venues</Link></li>
+              <li><Link to="/categories/event-decorators" className="hover:text-terracotta transition-colors">Event Decorators</Link></li>
+              <li><Link to="/categories/catering-services" className="hover:text-terracotta transition-colors">Catering Services</Link></li>
             </ul>
           </div>
 
@@ -87,4 +87,5 @@ export default function Footer() {
     </footer>
   )
 }
+
 

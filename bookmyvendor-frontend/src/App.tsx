@@ -28,6 +28,7 @@ import JoinAsVendorPage from './features/info/JoinAsVendorPage'
 import AboutUsPage from './features/info/AboutUsPage'
 import PrivacyPage from './features/info/PrivacyPage'
 import TermsPage from './features/info/TermsPage'
+import CategoryPage from './features/info/CategoryPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,7 +61,7 @@ function App() {
 
           {/* ── Main App Routes (With Navbar) ── */}
                     <Route element={<MainLayout />}>
-            <Route path="/" element={<HomePage />} />`n            <Route path="/how-it-works" element={<HowItWorksPage />} />`n            <Route path="/join-as-vendor" element={<JoinAsVendorPage />} />`n            <Route path="/about" element={<AboutUsPage />} />`n            <Route path="/privacy" element={<PrivacyPage />} />`n            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/" element={<HomePage />} />`n            <Route path="/how-it-works" element={<HowItWorksPage />} />`n            <Route path="/join-as-vendor" element={<JoinAsVendorPage />} />`n            <Route path="/about" element={<AboutUsPage />} />`n            <Route path="/privacy" element={<PrivacyPage />} />`n            <Route path="/terms" element={<TermsPage />} />`n            <Route path="/categories/:slug" element={<CategoryPage />} />
             <Route path="/vendors" element={<VendorSearchPage />} />
             <Route path="/vendors/:id" element={<VendorDetailPage />} />
             <Route path="/dashboard" element={<CustomerBookingsPage />} />
@@ -84,6 +85,7 @@ function App() {
 }
 
 export default App
+
 
 
 
