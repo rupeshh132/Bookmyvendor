@@ -17,7 +17,7 @@ const images: ImageProps[] = [
     depth: 0.05,
   },
   {
-    src: 'https://images.unsplash.com/photo-1595954625574-88981e7d2358?q=80&w=800&auto=format&fit=crop', // Real Portrait / Makeup
+    src: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop', // Real Portrait / Makeup
     alt: 'Bridal Makeup',
     className: 'w-48 h-64 md:w-64 md:h-[340px] top-[15%] md:top-[20%] right-[5%] md:right-[10%] object-cover rounded-[32px] shadow-floating',
     depth: 0.08,
@@ -115,3 +115,4 @@ function ParallaxImage({ img, smoothX, smoothY }: { img: ImageProps, smoothX: an
     />
   )
 }
+
