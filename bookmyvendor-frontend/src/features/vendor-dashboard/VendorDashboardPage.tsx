@@ -1,4 +1,5 @@
-﻿import { useState } from 'react'
+﻿import { PageLoader } from '../../components/ui/page-loader'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
@@ -196,6 +197,7 @@ export default function VendorDashboardPage() {
     </div>
   )
 }
+
 
 
 

@@ -1,4 +1,5 @@
-﻿import { useState } from 'react'
+﻿import { PageLoader } from '../../components/ui/page-loader'
+import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Calendar, Users, Check, X, Clock, MessageCircle } from 'lucide-react'
 import { bookingService } from '../../services/bookingService'
@@ -174,5 +175,6 @@ export default function VendorBookingsPage() {
     </div>
   )
 }
+
 
 

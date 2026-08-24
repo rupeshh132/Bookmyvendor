@@ -2,7 +2,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Search, MapPin, Star, Filter, ArrowRight } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { PageLoader } from '../../components/ui/page-loader'
 import { vendorService } from '../../services/vendorService'
 
 const CATEGORIES = ['PHOTOGRAPHER', 'CATERER', 'DECORATOR', 'VENUE', 'MAKEUP']
@@ -160,6 +159,7 @@ export default function VendorSearchPage() {
     </div>
   )
 }
+
 
 
 

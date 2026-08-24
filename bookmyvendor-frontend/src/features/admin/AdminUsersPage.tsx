@@ -1,4 +1,5 @@
-﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+﻿import { PageLoader } from '../../components/ui/page-loader'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { adminService } from '../../services/adminService'
 import { Check, Ban } from 'lucide-react'
 
@@ -78,5 +79,6 @@ export default function AdminUsersPage() {
     </div>
   )
 }
+
 
 
