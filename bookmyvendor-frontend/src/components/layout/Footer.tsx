@@ -1,5 +1,5 @@
 ﻿import { Link } from 'react-router-dom'
-import { Instagram, Facebook, Twitter, Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -19,13 +19,13 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-terracotta hover:text-navy transition-colors">
-                <Instagram size={18} />
+                IG
               </a>
               <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-terracotta hover:text-navy transition-colors">
-                <Facebook size={18} />
+                FB
               </a>
               <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-terracotta hover:text-navy transition-colors">
-                <Twitter size={18} />
+                X
               </a>
             </div>
           </div>
@@ -87,3 +87,4 @@ export default function Footer() {
     </footer>
   )
 }
+
