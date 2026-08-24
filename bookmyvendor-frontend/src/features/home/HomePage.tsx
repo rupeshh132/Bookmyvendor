@@ -2,6 +2,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { ParallaxFloating } from '../../components/ui/parallax-floating'
 import Balancer from 'react-wrap-balancer'
 import heroImage from '../../assets/images/a_cinematic_wide_angle_landscape_photograph_of_a_luxury_indian_wedding_venue_at.png'
 
@@ -172,6 +173,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Inspiration Parallax Section */}
+      <section className="border-t border-stone pt-8">
+        <ParallaxFloating />
+      </section>
+
       {/* Why Us */}
       <section className="py-28 bg-navy rounded-t-[56px] mt-8">
         <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20">
@@ -219,4 +225,5 @@ export default function HomePage() {
     </div>
   )
 }
+
 
