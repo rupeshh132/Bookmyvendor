@@ -25,7 +25,7 @@ export default function AdminLayout() {
       <aside className="w-64 bg-white border-r border-stone flex flex-col h-screen sticky top-0">
         <div className="p-6">
           <Link to="/" className="font-display font-bold text-2xl text-ink">
-            Book<span className="text-terracotta">My</span>Vendor
+            <img src="/logo.jpg" alt="BookMyVendor" className="h-8 object-contain" />
           </Link>
           <div className="mt-1 text-xs text-muted uppercase tracking-widest font-bold">Admin Panel</div>
         </div>

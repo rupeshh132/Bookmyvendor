@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useAuthStore } from '../../lib/authStore'
@@ -22,7 +22,7 @@ export default function Navbar() {
           to="/"
           className="font-display font-semibold text-navy text-lg tracking-tight flex-shrink-0"
         >
-          Book<span className="text-terracotta">●</span>MyVendor
+          <img src="/logo.jpg" alt="BookMyVendor" className="h-10 object-contain" />
         </Link>
 
         {/* Desktop nav links */}
@@ -126,3 +126,5 @@ export default function Navbar() {
     </>
   )
 }
+
+

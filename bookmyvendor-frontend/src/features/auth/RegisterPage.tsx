@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, ArrowRight, User as UserIcon, Store } from 'lucide-react'
@@ -59,7 +59,7 @@ export default function RegisterPage() {
       {/* ── Left: Decorative panel ── */}
       <div className="hidden lg:flex lg:w-1/2 bg-navy flex-col justify-between p-12">
         <Link to="/" className="font-display font-semibold text-white text-xl">
-          Book<span className="text-terracotta">●</span>MyVendor
+          <img src="/logo.jpg" alt="BookMyVendor" className="h-10 object-contain" />
         </Link>
         <div>
           <h2 className="font-display font-semibold text-white text-4xl leading-tight mb-6">
@@ -79,7 +79,7 @@ export default function RegisterPage() {
       <div className="flex-1 flex items-center justify-center px-6 py-12 overflow-y-auto">
         <div className="w-full max-w-md">
           <Link to="/" className="lg:hidden block font-display font-semibold text-navy text-xl mb-8">
-            Book<span className="text-terracotta">●</span>MyVendor
+            <img src="/logo.jpg" alt="BookMyVendor" className="h-10 object-contain" />
           </Link>
 
           <h1 className="font-display font-semibold text-3xl text-ink mb-2">Create an account</h1>
@@ -232,4 +232,6 @@ export default function RegisterPage() {
     </div>
   )
 }
+
+
 

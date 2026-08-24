@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, Phone, Mail, ArrowRight } from 'lucide-react'
@@ -114,7 +114,7 @@ export default function LoginPage() {
       {/* ── Left: Decorative panel (hidden on mobile) ── */}
       <div className="hidden lg:flex lg:w-1/2 bg-navy flex-col justify-between p-12">
         <Link to="/" className="font-display font-semibold text-white text-xl">
-          Book<span className="text-terracotta">●</span>MyVendor
+          <img src="/logo.jpg" alt="BookMyVendor" className="h-10 object-contain" />
         </Link>
         <div>
           <p className="text-stone/60 font-sans text-label tracking-label uppercase mb-4">TRUSTED BY 500+ VENDORS</p>
@@ -146,7 +146,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <Link to="/" className="lg:hidden block font-display font-semibold text-navy text-xl mb-8">
-            Book<span className="text-terracotta">●</span>MyVendor
+            <img src="/logo.jpg" alt="BookMyVendor" className="h-10 object-contain" />
           </Link>
 
           <h1 className="font-display font-semibold text-3xl text-ink mb-2">Welcome back</h1>
@@ -338,5 +338,7 @@ export default function LoginPage() {
     </div>
   )
 }
+
+
 
 

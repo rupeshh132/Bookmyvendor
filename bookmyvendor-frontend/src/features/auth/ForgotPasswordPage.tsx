@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, MailCheck } from 'lucide-react'
@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-ivory flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <Link to="/" className="block font-display font-semibold text-navy text-xl text-center mb-10">
-          Book<span className="text-terracotta">●</span>MyVendor
+          <img src="/logo.jpg" alt="BookMyVendor" className="h-10 object-contain" />
         </Link>
 
         <motion.div
@@ -93,3 +93,5 @@ export default function ForgotPasswordPage() {
     </div>
   )
 }
+
+
