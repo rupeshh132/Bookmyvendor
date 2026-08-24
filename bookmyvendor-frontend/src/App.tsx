@@ -23,6 +23,7 @@ import VendorBookingsPage from './features/vendor-dashboard/VendorBookingsPage'
 
 import VendorDashboardPage from './features/vendor-dashboard/VendorDashboardPage'
 import HomePage from './features/home/HomePage'
+import HowItWorksPage from './features/info/HowItWorksPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,7 +56,7 @@ function App() {
 
           {/* ── Main App Routes (With Navbar) ── */}
                     <Route element={<MainLayout />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />`n            <Route path="/how-it-works" element={<HowItWorksPage />} />
             <Route path="/vendors" element={<VendorSearchPage />} />
             <Route path="/vendors/:id" element={<VendorDetailPage />} />
             <Route path="/dashboard" element={<CustomerBookingsPage />} />
@@ -79,6 +80,7 @@ function App() {
 }
 
 export default App
+
 
 
 
