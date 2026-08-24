@@ -1,10 +1,19 @@
 ﻿import { Search, MapPin, Star, ShieldCheck, HeartHandshake, ArrowRight, Camera, Utensils, Palette, Building2, MessageSquare } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import useEmblaCarousel from 'embla-carousel-react'
 import { motion } from 'framer-motion'
 import { ParallaxFloating } from '../../components/ui/parallax-floating'
 import Balancer from 'react-wrap-balancer'
 import heroImage from '../../assets/images/a_cinematic_wide_angle_landscape_photograph_of_a_luxury_indian_wedding_venue_at.png'
+
+const TOP_VENDORS = [
+  { id: 1, name: 'Sharma Photography', category: 'Photographer', rating: 4.9, reviews: 124, city: 'Delhi NCR', price: '₹45,000', image: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&w=800&auto=format&fit=crop' },
+  { id: 2, name: 'The Royal Palace', category: 'Venue', rating: 4.8, reviews: 89, city: 'Lucknow', price: '₹2.5L/day', image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop' },
+  { id: 3, name: 'Elegant Events Decor', category: 'Decorator', rating: 5.0, reviews: 56, city: 'Mumbai', price: '₹80,000', image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=800&auto=format&fit=crop' },
+  { id: 4, name: 'Royal Caterers', category: 'Caterer', rating: 4.7, reviews: 210, city: 'Bangalore', price: '₹1,200/plate', image: 'https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=800&auto=format&fit=crop' },
+  { id: 5, name: 'Glamour Makeovers', category: 'Makeup Artist', rating: 4.9, reviews: 78, city: 'Jaipur', price: '₹25,000', image: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop' }
+]
 
 const CATEGORIES = [
   { id: 'PHOTOGRAPHER', label: 'Photographers', Icon: Camera, count: '120+ verified' },
@@ -17,6 +26,7 @@ const CITIES = ['Lucknow', 'Delhi NCR', 'Mumbai', 'Bangalore', 'Jaipur', 'Hydera
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const [emblaRef] = useEmblaCarousel({ align: 'start', loop: true, dragFree: true })
   const [city, setCity] = useState('Lucknow')
   const [category, setCategory] = useState('PHOTOGRAPHER')
 
@@ -219,6 +229,57 @@ export default function HomePage() {
         <ParallaxFloating />
       </section>
 
+      {/* Top Vendors Spotlight */}
+      <section className="py-24 bg-ivory border-t border-stone overflow-hidden">
+        <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <p className="font-sans text-label text-terracotta tracking-widest uppercase mb-3">Spotlight</p>
+              <h2 className="font-display text-4xl md:text-5xl text-navy">Top Rated Vendors</h2>
+            </div>
+            <Link to="/vendors" className="hidden md:inline-flex items-center gap-2 font-sans font-medium text-navy hover:text-terracotta transition-colors">
+              Explore all <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="overflow-visible" ref={emblaRef}>
+            <div className="flex gap-6">
+              {TOP_VENDORS.map(vendor => (
+                <div key={vendor.id} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 relative">
+                  <Link to={`/vendors/${vendor.id}`} className="group block bg-white rounded-[24px] overflow-hidden border border-stone shadow-sm hover:shadow-cardHover transition-all duration-300 hover:-translate-y-1">
+                    <div className="relative h-60 overflow-hidden">
+                      <img src={vendor.image} alt={vendor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 font-sans text-xs font-bold text-navy shadow-sm">
+                        <Star className="w-3.5 h-3.5 text-terracotta fill-terracotta" />
+                        {vendor.rating}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <p className="font-sans text-xs text-terracotta font-medium tracking-wider uppercase mb-2">{vendor.category}</p>
+                      <h3 className="font-display text-xl text-navy mb-2 line-clamp-1">{vendor.name}</h3>
+                      <div className="flex items-center gap-4 text-stone/80 text-sm font-sans mb-4">
+                        <div className="flex items-center gap-1.5"><MapPin size={14} className="text-muted" /> <span className="text-muted">{vendor.city}</span></div>
+                        <div className="w-1 h-1 rounded-full bg-stone/50"></div>
+                        <span className="text-muted">{vendor.reviews} Reviews</span>
+                      </div>
+                      <div className="pt-4 border-t border-stone flex justify-between items-center">
+                        <div>
+                          <p className="text-xs text-muted font-sans mb-0.5">Starting at</p>
+                          <p className="font-sans font-medium text-navy">{vendor.price}</p>
+                        </div>
+                        <button className="w-10 h-10 rounded-full bg-ivory flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-colors">
+                          <ArrowRight size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Why Us */}
       <section className="py-28 bg-navy rounded-t-[56px] mt-8">
         <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20">
@@ -266,6 +327,10 @@ export default function HomePage() {
     </div>
   )
 }
+
+
+
+
 
 
 
