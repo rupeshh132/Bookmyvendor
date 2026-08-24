@@ -1,6 +1,8 @@
 ﻿import { Search, MapPin, Star, ShieldCheck, HeartHandshake, ArrowRight, Camera, Utensils, Palette, Building2 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import Balancer from 'react-wrap-balancer'
 
 const CATEGORIES = [
   { id: 'PHOTOGRAPHER', label: 'Photographers', Icon: Camera, count: '120+ verified' },
@@ -25,61 +27,121 @@ export default function HomePage() {
     <div className="min-h-screen bg-ivory">
 
       {/* Hero */}
-      <section className="relative pt-28 pb-36 overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-stone to-ivory" />
-        <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20 text-center">
+            {/* Hero */}
+      <section className="bg-ivory relative isolate w-full overflow-hidden pt-32 pb-16">
+        <motion.div
+          className="relative z-10 mx-auto grid max-w-container grid-cols-1 px-6 md:px-12 lg:px-20 lg:grid-cols-12 gap-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } }
+          }}
+        >
+          {/* Left Side: Tagline */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 12, filter: 'blur(6px)' },
+              visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.28 } }
+            }}
+            className="flex lg:col-span-4 lg:col-start-1 lg:items-end lg:self-stretch pb-2 lg:pb-10"
+          >
+            <span className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-stone text-sm font-medium text-navy">
+              <span className="w-2 h-2 rounded-full bg-sage inline-block" />
+              India's Most Trusted Event Vendor Platform
+            </span>
+          </motion.div>
 
-          <span className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full shadow-sm border border-stone text-sm font-medium text-navy mb-8">
-            <span className="w-2 h-2 rounded-full bg-sage inline-block" />
-            India's Most Trusted Event Vendor Platform
-          </span>
+          {/* Right Side: Title, Desc, Search form */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 12, filter: 'blur(6px)' },
+              visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.28 } }
+            }}
+            className="flex flex-col items-start lg:col-span-7 lg:col-start-6 gap-6 sm:gap-8"
+          >
+            <h1 className="font-display text-5xl md:text-[62px] text-navy leading-[1.05] text-balance">
+              <Balancer>
+                Book the perfect vendors for your{' '}
+                <span className="text-terracotta italic">dream event.</span>
+              </Balancer>
+            </h1>
 
-          <h1 className="font-display text-5xl md:text-hero text-navy leading-[1.08] max-w-4xl mx-auto mb-6">
-            Book the perfect vendors for your{' '}
-            <span className="text-terracotta italic">dream event.</span>
-          </h1>
+            <p className="font-sans text-lg text-muted max-w-xl leading-relaxed">
+              <Balancer>
+                Discover and instantly book photographers, venues, caterers and more -
+                all verified, all in one place.
+              </Balancer>
+            </p>
 
-          <p className="font-sans text-lg text-muted max-w-2xl mx-auto mb-14">
-            Discover and instantly book photographers, venues, caterers and more —
-            all verified, all in one place.
-          </p>
+            <div className="w-full max-w-2xl bg-white rounded-2xl md:rounded-full shadow-floating border border-stone/60 p-3 md:p-2 mt-2">
+              <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 md:gap-2">
+                <div className="flex flex-1 items-center bg-ivory rounded-xl md:rounded-full px-5 py-3.5 gap-3">
+                  <Search className="w-4 h-4 text-muted shrink-0" />
+                  <select value={category} onChange={(e) => setCategory(e.target.value)}
+                    className="w-full bg-transparent border-none outline-none font-sans text-sm text-ink cursor-pointer">
+                    <option value="PHOTOGRAPHER">Photographers</option>
+                    <option value="VENUE">Venues & Banquets</option>
+                    <option value="DECORATOR">Decorators</option>
+                    <option value="CATERER">Caterers</option>
+                    <option value="MAKEUP">Makeup Artists</option>
+                  </select>
+                </div>
+                <div className="flex flex-1 items-center bg-ivory rounded-xl md:rounded-full px-5 py-3.5 gap-3 border-l md:border-stone">
+                  <MapPin className="w-4 h-4 text-muted shrink-0" />
+                  <select value={city} onChange={(e) => setCity(e.target.value)}
+                    className="w-full bg-transparent border-none outline-none font-sans text-sm text-ink cursor-pointer">
+                    {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+                <button type="submit" className="btn-primary md:py-3 shrink-0 w-full md:w-auto">
+                  Search
+                </button>
+              </form>
+            </div>
+          </motion.div>
+        </motion.div>
 
-          <div className="max-w-3xl mx-auto bg-white rounded-2xl md:rounded-full shadow-floating border border-stone/60 p-3 md:p-2">
-            <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3 md:gap-2">
-              <div className="flex flex-1 items-center bg-ivory rounded-xl md:rounded-full px-5 py-3.5 gap-3">
-                <Search className="w-4 h-4 text-muted shrink-0" />
-                <select value={category} onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-transparent border-none outline-none font-sans text-sm text-ink cursor-pointer">
-                  <option value="PHOTOGRAPHER">Photographers</option>
-                  <option value="VENUE">Venues and Banquets</option>
-                  <option value="DECORATOR">Decorators</option>
-                  <option value="CATERER">Caterers</option>
-                  <option value="MAKEUP">Makeup Artists</option>
-                </select>
-              </div>
-              <div className="flex flex-1 items-center bg-ivory rounded-xl md:rounded-full px-5 py-3.5 gap-3">
-                <MapPin className="w-4 h-4 text-muted shrink-0" />
-                <select value={city} onChange={(e) => setCity(e.target.value)}
-                  className="w-full bg-transparent border-none outline-none font-sans text-sm text-ink cursor-pointer">
-                  {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-              <button type="submit" className="btn-primary md:py-3 shrink-0 w-full md:w-auto">
-                Search Vendors
-              </button>
-            </form>
+        {/* Media Element */}
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
+            visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } }
+          }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          className="w-full mt-16 max-w-container mx-auto px-6 md:px-12 lg:px-20"
+        >
+          <div className="relative w-full overflow-hidden rounded-cardLg shadow-elevated">
+            <img
+              src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop"
+              alt="Luxury wedding setup"
+              decoding="async"
+              className="aspect-[4/3] sm:aspect-[21/9] w-full object-cover object-center filter saturate-[0.85] contrast-[1.02]"
+            />
           </div>
+        </motion.div>
 
-          <div className="flex flex-wrap justify-center gap-8 mt-16">
+        {/* Stats */}
+        <motion.div 
+          className="max-w-container mx-auto px-6 md:px-12 lg:px-20 mt-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <div className="flex flex-wrap justify-start gap-12 lg:gap-20 border-t border-stone pt-10">
             {[{ value: '500+', label: 'Verified Vendors' }, { value: '10k+', label: 'Happy Customers' }, { value: '4.8', label: 'Avg. Rating' }]
               .map(({ value, label }) => (
-                <div key={label} className="text-center">
+                <div key={label} className="text-left">
                   <p className="font-display text-4xl text-navy mb-1">{value}</p>
                   <p className="font-sans text-sm text-muted">{label}</p>
                 </div>
               ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Categories */}
