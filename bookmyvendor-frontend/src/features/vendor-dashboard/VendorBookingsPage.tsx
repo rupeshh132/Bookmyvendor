@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Calendar, Users, Check, X, Clock, MessageCircle } from 'lucide-react'
 import { bookingService } from '../../services/bookingService'
@@ -34,7 +34,7 @@ export default function VendorBookingsPage() {
     }
   })
 
-  if (isLoading) return <div className="min-h-screen bg-ivory pt-32 px-6"><div className="max-w-4xl mx-auto card-white animate-pulse h-96" /></div>
+  if (isLoading) return <PageLoader />
 
   return (
     <div className="min-h-screen bg-ivory pt-24 pb-12 px-6">
@@ -174,4 +174,5 @@ export default function VendorBookingsPage() {
     </div>
   )
 }
+
 

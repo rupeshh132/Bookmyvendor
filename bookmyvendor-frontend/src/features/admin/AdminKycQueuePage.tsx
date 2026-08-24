@@ -1,4 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { BouncingDots } from '../../components/ui/bouncing-dots'
 import { ShieldCheck, X, FileText } from 'lucide-react'
 import { adminService } from '../../services/adminService'
 import { Link } from 'react-router-dom'
@@ -26,9 +27,7 @@ export default function AdminKycQueuePage() {
       <p className="font-sans text-muted mb-8">Review and verify new vendor profiles before they go live.</p>
 
       {kycLoading ? (
-        <div className="animate-pulse space-y-4">
-          {[1,2,3].map(i => <div key={i} className="h-32 bg-stone rounded-2xl"></div>)}
-        </div>
+        <div className="py-20"><BouncingDots /></div>
       ) : kycQueue.length === 0 ? (
         <div className="text-center py-20 card-white border border-dashed border-stone">
           <ShieldCheck size={48} className="mx-auto text-stone mb-4" />
@@ -88,3 +87,4 @@ export default function AdminKycQueuePage() {
     </div>
   )
 }
+

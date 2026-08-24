@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { MapPin, DollarSign, Info, ShieldCheck, AlertCircle } from 'lucide-react'
@@ -26,7 +26,7 @@ export default function VendorDashboardPage() {
     },
   })
 
-  if (isLoading) return <div className="min-h-screen bg-ivory pt-32 px-6"><div className="max-w-4xl mx-auto card-white animate-pulse h-96" /></div>
+  if (isLoading) return <PageLoader />
 
   if (!profile) return <div className="pt-32 text-center text-rose">Failed to load profile.</div>
 
@@ -196,5 +196,6 @@ export default function VendorDashboardPage() {
     </div>
   )
 }
+
 
 
