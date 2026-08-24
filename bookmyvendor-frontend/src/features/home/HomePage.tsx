@@ -15,6 +15,14 @@ const TOP_VENDORS = [
   { id: 5, name: 'Glamour Makeovers', category: 'Makeup Artist', rating: 4.9, reviews: 78, city: 'Jaipur', price: '₹25,000', image: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop' }
 ]
 
+const TESTIMONIALS = [
+  { id: 1, name: 'Ananya & Rahul', role: 'Married in Jaipur', content: '"We found the perfect palace venue and decor team within days. BookMyVendor saved us months of stress!"', rating: 5, image: 'https://images.unsplash.com/photo-1606216439075-812e9b0b4685?q=80&w=200&auto=format&fit=crop' },
+  { id: 2, name: 'Priya Sharma', role: 'Corporate Event Manager', content: '"The verified vendors and transparent pricing make this my go-to platform for organizing large corporate galas."', rating: 5, image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop' },
+  { id: 3, name: 'Karan Singh', role: 'Brother of the Bride', content: '"Booked a premium caterer and photographer. Everything was seamless from chat to secure payment."', rating: 4, image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop' },
+  { id: 4, name: 'Neha & Vikram', role: 'Married in Goa', content: '"I was worried about finding vendors in a different city, but the reviews and portfolios here are 100% authentic."', rating: 5, image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop' },
+  { id: 5, name: 'Rohan Gupta', role: 'Event Planner', content: '"I recommend BookMyVendor to all my clients. It is simply the most reliable marketplace in India right now."', rating: 5, image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop' }
+]
+
 const CATEGORIES = [
   { id: 'PHOTOGRAPHER', label: 'Photographers', Icon: Camera, count: '120+ verified' },
   { id: 'VENUE', label: 'Venues & Banquets', Icon: Building2, count: '85+ verified' },
@@ -280,6 +288,61 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="py-24 bg-white border-t border-stone overflow-hidden">
+        <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20 text-center mb-16">
+          <p className="font-sans text-label text-terracotta tracking-widest uppercase mb-3">Real Stories</p>
+          <h2 className="font-display text-4xl md:text-5xl text-navy">Loved by thousands</h2>
+        </div>
+
+        <div className="relative flex overflow-hidden group">
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-40 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-40 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+          <motion.div
+            className="flex shrink-0 w-max"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
+          >
+            <div className="flex gap-6 pr-6">
+              {TESTIMONIALS.map((t) => (
+                <div key={t.id} className="w-[320px] md:w-[420px] bg-ivory rounded-[24px] p-8 border border-stone/50 shadow-sm transition-colors hover:border-terracotta/30">
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(t.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-terracotta fill-terracotta" />)}
+                  </div>
+                  <p className="font-display text-lg text-navy mb-8 leading-relaxed">{t.content}</p>
+                  <div className="flex items-center gap-4">
+                    <img src={t.image} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
+                    <div>
+                      <h4 className="font-sans font-bold text-navy text-sm">{t.name}</h4>
+                      <p className="font-sans text-xs text-muted mt-0.5">{t.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex gap-6 pr-6" aria-hidden="true">
+              {TESTIMONIALS.map((t) => (
+                <div key={t.id + '-dup'} className="w-[320px] md:w-[420px] bg-ivory rounded-[24px] p-8 border border-stone/50 shadow-sm transition-colors hover:border-terracotta/30">
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(t.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-terracotta fill-terracotta" />)}
+                  </div>
+                  <p className="font-display text-lg text-navy mb-8 leading-relaxed">{t.content}</p>
+                  <div className="flex items-center gap-4">
+                    <img src={t.image} alt={t.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
+                    <div>
+                      <h4 className="font-sans font-bold text-navy text-sm">{t.name}</h4>
+                      <p className="font-sans text-xs text-muted mt-0.5">{t.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Why Us */}
       <section className="py-28 bg-navy rounded-t-[56px] mt-8">
         <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20">
@@ -327,6 +390,7 @@ export default function HomePage() {
     </div>
   )
 }
+
 
 
 
