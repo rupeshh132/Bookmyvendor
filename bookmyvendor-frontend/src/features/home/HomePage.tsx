@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Balancer from 'react-wrap-balancer'
+import heroImage from '../../assets/images/a_cinematic_wide_angle_landscape_photograph_of_a_luxury_indian_wedding_venue_at.png'
 
 const CATEGORIES = [
   { id: 'PHOTOGRAPHER', label: 'Photographers', Icon: Camera, count: '120+ verified' },
@@ -116,7 +117,7 @@ export default function HomePage() {
         >
           <div className="relative w-full overflow-hidden rounded-cardLg shadow-elevated">
             <img
-              src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop"
+              src={heroImage}
               alt="Luxury wedding setup"
               decoding="async"
               className="aspect-[4/3] sm:aspect-[21/9] w-full object-cover object-center filter saturate-[0.85] contrast-[1.02]"
@@ -218,3 +219,4 @@ export default function HomePage() {
     </div>
   )
 }
+
