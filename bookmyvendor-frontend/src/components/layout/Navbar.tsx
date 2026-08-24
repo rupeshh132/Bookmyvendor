@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useAuthStore } from '../../lib/authStore'
@@ -15,8 +15,8 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Floating Pill Navbar ── */}
-      <header className="nav-pill w-[92%] max-w-5xl">
+      {/* -- Floating Pill Navbar -- */}
+      <header className="nav-pill w-[92%] max-w-5xl justify-between">
         {/* Logo */}
         <Link
           to="/"
@@ -26,13 +26,13 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav links */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `px-4 py-1.5 rounded-full font-sans font-medium text-sm transition-all duration-200 ${
+                `px-6 py-2 rounded-full font-sans font-medium text-sm transition-all duration-200 ${
                   isActive
                     ? 'bg-white text-navy shadow-sm'
                     : 'text-muted hover:text-ink hover:bg-stone/60'
@@ -45,7 +45,7 @@ export default function Navbar() {
         </nav>
 
         {/* CTA / Auth Buttons */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-3">
           {isAuthenticated ? (
             <>
               <Link to={user?.role === 'ADMIN' ? '/admin' : user?.role === 'VENDOR' ? '/vendor/dashboard' : '/dashboard'} className="btn-ghost py-2 px-4 text-xs">
@@ -77,7 +77,7 @@ export default function Navbar() {
         </button>
       </header>
 
-      {/* 📱 Mobile Menu Overlay 📱 */}
+      {/* ?? Mobile Menu Overlay ?? */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-ivory/95 backdrop-blur-sm flex flex-col pt-24 px-6">
           <nav className="flex flex-col gap-2">
@@ -126,5 +126,6 @@ export default function Navbar() {
     </>
   )
 }
+
 
 
