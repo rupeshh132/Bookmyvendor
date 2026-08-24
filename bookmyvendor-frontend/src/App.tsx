@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
+﻿import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Navbar from './components/layout/Navbar'
+import Footer from './components/layout/Footer'
 
 // Auth Pages
 import LoginPage from './features/auth/LoginPage'
@@ -34,10 +35,11 @@ const queryClient = new QueryClient({
 
 // Layout wrapper that includes Navbar
 const MainLayout = () => (
-  <>
+  <div className="min-h-screen flex flex-col">
     <Navbar />
-    <Outlet />
-  </>
+    <div className="flex-1"><Outlet /></div>
+    <Footer />
+  </div>
 )
 
 function App() {
@@ -77,6 +79,9 @@ function App() {
 }
 
 export default App
+
+
+
 
 
 
