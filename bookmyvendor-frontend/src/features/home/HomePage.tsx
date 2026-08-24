@@ -1,4 +1,4 @@
-﻿import { Search, MapPin, Star, ShieldCheck, HeartHandshake, ArrowRight, Camera, Utensils, Palette, Building2 } from 'lucide-react'
+﻿import { Search, MapPin, Star, ShieldCheck, HeartHandshake, ArrowRight, Camera, Utensils, Palette, Building2, MessageSquare } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -173,6 +173,47 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="py-24 bg-white border-t border-stone relative overflow-hidden">
+        <div className="max-w-container mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+          <div className="text-center mb-16">
+            <p className="font-sans text-label text-terracotta tracking-widest uppercase mb-3">Simple Process</p>
+            <h2 className="font-display text-4xl md:text-5xl text-navy">How it works</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-12 relative">
+            
+            {/* Dashed Connecting Line (Desktop only) */}
+            <div className="hidden md:block absolute top-10 left-[16%] right-[16%] border-t-2 border-dashed border-stone -z-10"></div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto bg-ivory rounded-full flex items-center justify-center mb-6 shadow-sm border border-stone/60 transition-transform hover:scale-110 duration-300">
+                <Search className="w-8 h-8 text-terracotta" />
+              </div>
+              <h3 className="font-display text-2xl text-navy mb-3">1. Discover Vendors</h3>
+              <p className="font-sans text-muted leading-relaxed max-w-sm mx-auto">Browse through thousands of verified vendors, read authentic reviews, and compare their portfolios.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto bg-ivory rounded-full flex items-center justify-center mb-6 shadow-sm border border-stone/60 transition-transform hover:scale-110 duration-300">
+                <MessageSquare className="w-8 h-8 text-terracotta" />
+              </div>
+              <h3 className="font-display text-2xl text-navy mb-3">2. Chat & Customize</h3>
+              <p className="font-sans text-muted leading-relaxed max-w-sm mx-auto">Contact vendors directly through our platform, discuss your requirements, and get custom quotes.</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 mx-auto bg-ivory rounded-full flex items-center justify-center mb-6 shadow-sm border border-stone/60 transition-transform hover:scale-110 duration-300">
+                <ShieldCheck className="w-8 h-8 text-terracotta" />
+              </div>
+              <h3 className="font-display text-2xl text-navy mb-3">3. Book Securely</h3>
+              <p className="font-sans text-muted leading-relaxed max-w-sm mx-auto">Finalize your booking with secure payments and our comprehensive event guarantee.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* Inspiration Parallax Section */}
       <section className="border-t border-stone pt-8">
         <ParallaxFloating />
@@ -225,5 +266,6 @@ export default function HomePage() {
     </div>
   )
 }
+
 
 
