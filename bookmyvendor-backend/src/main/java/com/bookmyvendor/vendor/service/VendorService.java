@@ -4,6 +4,7 @@ import com.bookmyvendor.auth.entity.VendorProfile;
 import com.bookmyvendor.auth.repository.VendorProfileRepository;
 import com.bookmyvendor.vendor.dto.UpdateVendorProfileRequest;
 import com.bookmyvendor.vendor.dto.VendorProfileDto;
+import com.bookmyvendor.vendor.dto.SubmitKycRequest;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -34,6 +35,26 @@ public class VendorService {
     }
 
     // ── Vendor Dashboard: Update Profile ────────────────────────────
+    @Transactional
+        // --- Vendor Dashboard: Submit KYC ---
+    @Transactional
+    public VendorProfileDto submitKyc(UUID userId, SubmitKycRequest req) {
+        VendorProfile profile = vendorProfileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Vendor profile not found"));
+        
+        if (profile.getKycStatus() == VendorProfile.KycStatus.APPROVED) {
+            throw new IllegalStateException("KYC is already approved.");
+        }
+
+        profile.setAadharNumber(req.getAadharNumber());
+        profile.setPanNumber(req.getPanNumber());
+        profile.setKycStatus(VendorProfile.KycStatus.UNDER_REVIEW);
+        profile.setKycSubmittedAt(java.time.LocalDateTime.now());
+        
+        VendorProfile updated = vendorProfileRepository.save(profile);
+        return VendorProfileDto.fromEntity(updated);
+    }
+
     @Transactional
     public VendorProfileDto updateProfile(UUID userId, UpdateVendorProfileRequest req) {
         VendorProfile profile = vendorProfileRepository.findByUserId(userId)
@@ -90,3 +111,4 @@ public class VendorService {
         return VendorProfileDto.fromEntity(profile);
     }
 }
+

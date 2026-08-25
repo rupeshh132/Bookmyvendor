@@ -58,6 +58,15 @@ public class VendorProfile {
 
     @Column(name = "kyc_rejection_note", columnDefinition = "TEXT")
     private String kycRejectionNote;
+    @Column(name = "aadhar_number", length = 20)
+    private String aadharNumber;
+
+    @Column(name = "pan_number", length = 20)
+    private String panNumber;
+
+    @Column(name = "kyc_submitted_at")
+    private LocalDateTime kycSubmittedAt;
+
 
     @Column(name = "avg_rating", precision = 3, scale = 2)
     private BigDecimal avgRating = BigDecimal.ZERO;
@@ -94,3 +103,4 @@ public class VendorProfile {
         FREE, PRO, ELITE
     }
 }
+

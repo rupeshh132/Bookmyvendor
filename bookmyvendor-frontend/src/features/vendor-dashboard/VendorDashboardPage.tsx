@@ -10,6 +10,8 @@ import PortfolioManager from './components/PortfolioManager'
 export default function VendorDashboardPage() {
   const queryClient = useQueryClient()
   const [isEditing, setIsEditing] = useState(false)
+  const [isKycModalOpen, setIsKycModalOpen] = useState(false)
+  const [kycForm, setKycForm] = useState({ aadharNumber: '', panNumber: '' })
   const [formData, setFormData] = useState<Partial<VendorProfile>>({})
 
   // Fetch own profile
@@ -19,6 +21,22 @@ export default function VendorDashboardPage() {
   })
 
   // Update profile mutation
+    const kycMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await fetch('/api/v1/vendors/me/kyc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ` },
+        body: JSON.stringify(data)
+      })
+      if (!res.ok) throw new Error('Failed to submit KYC')
+      return res.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vendorProfile', 'me'] })
+      setIsKycModalOpen(false)
+    }
+  })
+
   const updateMutation = useMutation({
     mutationFn: vendorService.updateMyProfile,
     onSuccess: () => {
@@ -55,12 +73,17 @@ export default function VendorDashboardPage() {
 
         {/* KYC Banner */}
         {profile.kycStatus === 'PENDING' && (
-          <div className="bg-amber/10 border border-amber/20 rounded-card p-4 flex gap-3 items-start">
-            <AlertCircle className="text-amber shrink-0 mt-0.5" />
-            <div>
-              <h4 className="font-sans font-semibold text-amber">Verification Pending</h4>
-              <p className="font-sans text-sm text-ink/80 mt-1">Your profile is currently hidden from customers. Please complete KYC verification to get listed.</p>
+                    <div className="bg-amber/10 border border-amber/20 rounded-card p-4 flex gap-3 items-start justify-between">
+            <div className="flex gap-3">
+              <AlertCircle className="text-amber shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-sans font-semibold text-amber">Verification Pending</h4>
+                <p className="font-sans text-sm text-ink/80 mt-1">Your profile is currently hidden from customers. Please complete KYC verification to get listed.</p>
+              </div>
             </div>
+            <button onClick={() => setIsKycModalOpen(true)} className="btn-primary py-2 px-4 text-sm bg-amber hover:bg-amber/90 border-none shadow-none text-white whitespace-nowrap">
+              Start KYC
+            </button>
           </div>
         )}
         
@@ -70,6 +93,32 @@ export default function VendorDashboardPage() {
             <div>
               <h4 className="font-sans font-semibold text-sage">Verified Vendor</h4>
               <p className="font-sans text-sm text-ink/80 mt-1">Your profile is live and visible to customers.</p>
+            </div>
+          </div>
+        )}
+
+                {isKycModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/50 backdrop-blur-sm p-4">
+            <div className="bg-white rounded-card w-full max-w-md p-6 shadow-xl">
+              <h2 className="font-display text-2xl text-navy mb-2">Complete KYC</h2>
+              <p className="font-sans text-muted mb-6">Submit your documents to verify your business and get listed on the platform.</p>
+              
+              <form onSubmit={(e) => { e.preventDefault(); kycMutation.mutate(kycForm) }} className="space-y-4">
+                <div>
+                  <label className="bmv-label">Aadhar Number</label>
+                  <input type="text" required className="bmv-input" placeholder="12-digit Aadhar Number" value={kycForm.aadharNumber} onChange={e => setKycForm({...kycForm, aadharNumber: e.target.value})} />
+                </div>
+                <div>
+                  <label className="bmv-label">PAN Number</label>
+                  <input type="text" required className="bmv-input uppercase" placeholder="10-character PAN" value={kycForm.panNumber} onChange={e => setKycForm({...kycForm, panNumber: e.target.value.toUpperCase()})} />
+                </div>
+                <div className="pt-4 flex gap-3 justify-end">
+                  <button type="button" onClick={() => setIsKycModalOpen(false)} className="btn-ghost">Cancel</button>
+                  <button type="submit" disabled={kycMutation.isPending} className="btn-primary">
+                    {kycMutation.isPending ? 'Submitting...' : 'Submit Documents'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
@@ -197,6 +246,9 @@ export default function VendorDashboardPage() {
     </div>
   )
 }
+
+
+
 
 
 

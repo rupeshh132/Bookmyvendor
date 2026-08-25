@@ -2,6 +2,7 @@ package com.bookmyvendor.vendor.controller;
 
 import com.bookmyvendor.common.dto.ApiResponse;
 import com.bookmyvendor.vendor.dto.UpdateVendorProfileRequest;
+import com.bookmyvendor.vendor.dto.SubmitKycRequest;
 import com.bookmyvendor.vendor.dto.VendorProfileDto;
 import com.bookmyvendor.vendor.service.VendorService;
 import jakarta.validation.Valid;
@@ -55,6 +56,17 @@ public class VendorController {
 
     // ── Protected (Vendor Role): Update Own Profile ─────────────────
     @PutMapping("/me")
+        @PostMapping("/me/kyc")
+    public ResponseEntity<ApiResponse<VendorProfileDto>> submitKyc(
+            Principal principal,
+            @Valid @RequestBody SubmitKycRequest req
+    ) {
+        UUID userId = UUID.fromString(principal.getName());
+        VendorProfileDto updated = vendorService.submitKyc(userId, req);
+        return ResponseEntity.ok(ApiResponse.success(updated, "KYC submitted successfully"));
+    }
+
+    @PutMapping("/me")
     public ResponseEntity<ApiResponse<VendorProfileDto>> updateMyProfile(
             Principal principal,
             @Valid @RequestBody UpdateVendorProfileRequest req
@@ -64,3 +76,4 @@ public class VendorController {
         return ResponseEntity.ok(ApiResponse.success(updated, "Profile updated successfully"));
     }
 }
+
