@@ -35,8 +35,7 @@ public class VendorService {
     }
 
     // ── Vendor Dashboard: Update Profile ────────────────────────────
-    @Transactional
-        // --- Vendor Dashboard: Submit KYC ---
+    // --- Vendor Dashboard: Submit KYC ---
     @Transactional
     public VendorProfileDto submitKyc(UUID userId, SubmitKycRequest req) {
         VendorProfile profile = vendorProfileRepository.findByUserId(userId)
@@ -111,4 +110,5 @@ public class VendorService {
         return VendorProfileDto.fromEntity(profile);
     }
 }
+
 

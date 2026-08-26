@@ -55,8 +55,7 @@ public class VendorController {
     }
 
     // ── Protected (Vendor Role): Update Own Profile ─────────────────
-    @PutMapping("/me")
-        @PostMapping("/me/kyc")
+    @PostMapping("/me/kyc")
     public ResponseEntity<ApiResponse<VendorProfileDto>> submitKyc(
             Principal principal,
             @Valid @RequestBody SubmitKycRequest req
@@ -76,4 +75,5 @@ public class VendorController {
         return ResponseEntity.ok(ApiResponse.success(updated, "Profile updated successfully"));
     }
 }
+
 
